@@ -3,6 +3,7 @@ let dia = 30; v = 0.2, a = 0.4, earths = [];
 let playing = true;
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  noStroke();
   for (let i = 0; i < n; i++) {
     createEarth(i);
   }
@@ -54,8 +55,9 @@ function draw() {
       }
     }
   }
-  fill(0);
+  noFill();
   circle(mouseX, mouseY, dia);
+  fill(0);
   textAlign(CENTER);
   textSize(20);
   text("points = " + score + "        " + "money = $" + money, 0, 0, width, 100)
@@ -69,14 +71,20 @@ function keyPressed() {
 function pauseUnpause() {
   if (playing == true) {
     playing = false;
-    upgradeCount.show()
-    upgradeSpeed.show()
+    for (let i = 0; i < n; i++) {
+      earths[i].img.hide();
+    }
+    upgradeCount.show();
+    upgradeSpeed.show();
     upgradeValue.show();
   } else {
     playing = true;
     upgradeCount.hide();
-    upgradeSpeed.hide()
+    upgradeSpeed.hide();
     upgradeValue.hide();
+    for (let i = 0; i < n; i++) {
+      earths[i].img.show();
+    }
   }
 }
 
@@ -131,19 +139,25 @@ class Earth {
     this.dist = sqrt((dx ** 2) + (dy ** 2));
     if (dx > 0 && dy < 0) {
       this.A = -asin(dy / this.dist);
-    } else if (dx < 0 && dy < 0 || dx < 0 && dy > 0) {
-      this.A = PI + asin(dy / this.dist);
+      this.ax = cos(this.A) ** 2 * a;
+      this.ay = -(sin(this.A) ** 2) * a;
     } else if (dx > 0 && dy > 0) {
       this.A = 2 * PI - asin(dy / this.dist);
+      this.ax = cos(this.A) ** 2 * a;
+      this.ay = sin(this.A) ** 2 * a;
+    } else if (dx < 0 && dy < 0) {
+      this.A = 2 * PI - asin(dy / this.dist);
+      this.ax = -(cos(this.A) ** 2) * a;
+      this.ay = -(sin(this.A) ** 2) * a;
+    } else if (dx < 0 && dy > 0) {
+      this.A = PI + asin(dy / this.dist);
+      this.ax = -(cos(this.A) ** 2) * a;
+      this.ay = (sin(this.A) ** 2) * a;
     }
-    this.ax = cos(this.A) * a;
-    this.ay = -sin(this.A) * a;
     this.vx = this.vx + (this.ax * v);
     this.vy = this.vy + (this.ay * v);
     this.x = this.x + this.vx;
     this.y = this.y + this.vy;
-    fill(this.R, this.G, this.B);
-    circle(this.x, this.y, this.dia);
     this.img.position(this.x - (this.dia / 2), this.y - (this.dia / 2));
     if (this.x - (this.dia / 2) <= 0 || this.x + (this.dia / 2) >= windowWidth) {
       this.vx = -this.vx;
