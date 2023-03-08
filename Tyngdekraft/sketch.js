@@ -1,7 +1,8 @@
-let dx, dy, ax, ay, A, R, G, B, n = 1, score = 0, money = 0, value = 1;
+let dx, dy, ax, ay, A, R, G, B, n = 1, score = 0, money = 0, value = 1, gracePeriod = 120;
 let dia = 30; v = 0.2, a = 600, earths = [];
 let playing = true;
 function setup() {
+  frameRate(60);
   createCanvas(windowWidth, windowHeight);
   noStroke();
   for (let i = 0; i < n; i++) {
@@ -48,9 +49,10 @@ function draw() {
         createEarth(i)
       }
       earths[i].update(mouseX, mouseY);
-      if (earths[i].hit) {
+      if (earths[i].hit && earths[i].dmg >= earths[i].lives) {
         score += earths[i].value;
         money += earths[i].value;
+        earths[i].img.remove();
         createEarth(i)
       }
     }
@@ -126,8 +128,11 @@ class Earth {
     this.y = random(this.dia, height - this.dia);
     this.vx = random(0, 5);
     this.vy = random(0, 5);
-    this.hit = false;
     this.value = value;
+    this.hit = false;
+    this.dmg = 0;
+    this.lives = 3;
+    this.grace = 0;
     this.img = createImg('Assets/earth.png');
     this.img.size(this.dia, this.dia);
     this.img.position(this.x - (this.dia / 2), this.y - (this.dia / 2));
@@ -146,12 +151,13 @@ class Earth {
     } else if (dx < 0 && dy < 0) {
       this.A = PI + asin(dy / this.dist);
     }
-    this.a = (100 * a) / (this.dist ** 2);
-    this.ax = cos(this.A) * this.a;
-    this.ay = -sin(this.A) * this.a;
-    print(abs(this.ax) / this.ax, abs(this.ay) / this.ay)
-    this.vx = this.vx + (this.ax * v);
-    this.vy = this.vy + (this.ay * v);
+    if (this.grace + gracePeriod <= frameCount) {
+      this.a = (100 * a) / ((this.dist + dia / 2 + this.dia / 2) ** 2);
+      this.ax = cos(this.A) * this.a;
+      this.ay = -sin(this.A) * this.a;
+      this.vx = this.vx + (this.ax * v);
+      this.vy = this.vy + (this.ay * v);
+    }
     this.x = this.x + this.vx;
     this.y = this.y + this.vy;
     this.img.position(this.x - (this.dia / 2), this.y - (this.dia / 2));
@@ -162,8 +168,11 @@ class Earth {
       this.vy = -this.vy;
     }
     if (this.dist <= this.dia / 2 + dia / 2) {
+      this.dmg++;
       this.hit = true;
-      this.img.remove();
+      this.grace = frameCount;
+      this.vx = -this.vx;
+      this.vy = -this.vy;
     }
   }
 }
