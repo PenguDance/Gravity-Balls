@@ -132,8 +132,64 @@ class Earth {
     this.hit = false;
     this.dmg = 0;
     this.lives = 3;
-    this.grace = 0;
+    this.grace = -gracePeriod;
     this.img = createImg('Assets/earth.png');
+    this.img.size(this.dia, this.dia);
+    this.img.position(this.x - (this.dia / 2), this.y - (this.dia / 2));
+
+  }
+  update(x, y) {
+    dx = x - this.x;
+    dy = y - this.y;
+    this.dist = sqrt((dx ** 2) + (dy ** 2));
+    if (dx > 0 && dy < 0) {
+      this.A = -asin(dy / this.dist);
+    } else if (dx > 0 && dy > 0) {
+      this.A = 2 * PI - asin(dy / this.dist);
+    } else if (dx < 0 && dy > 0) {
+      this.A = PI + asin(dy / this.dist);
+    } else if (dx < 0 && dy < 0) {
+      this.A = PI + asin(dy / this.dist);
+    }
+    if (this.grace + gracePeriod <= frameCount) {
+      this.a = (100 * a) / ((this.dist + dia / 2 + this.dia / 2) ** 2);
+      this.ax = cos(this.A) * this.a;
+      this.ay = -sin(this.A) * this.a;
+      this.vx = this.vx + (this.ax * v);
+      this.vy = this.vy + (this.ay * v);
+    }
+    this.x = this.x + this.vx;
+    this.y = this.y + this.vy;
+    this.img.position(this.x - (this.dia / 2), this.y - (this.dia / 2));
+    if (this.x - (this.dia / 2) <= 0 || this.x + (this.dia / 2) >= windowWidth) {
+      this.vx = -this.vx;
+    }
+    if (this.y - (this.dia / 2) <= 0 || this.y + (this.dia / 2) >= windowHeight) {
+      this.vy = -this.vy;
+    }
+    if (this.dist <= this.dia / 2 + dia / 2) {
+      this.dmg++;
+      this.hit = true;
+      this.grace = frameCount;
+      this.vx = -this.vx;
+      this.vy = -this.vy;
+    }
+  }
+}
+
+class Bomb {
+   constructor() {
+    this.dia = 50;
+    this.x = random(this.dia, width - this.dia);
+    this.y = random(this.dia, height - this.dia);
+    this.vx = random(0, 5);
+    this.vy = random(0, 5);
+    this.value = value;
+    this.hit = false;
+    this.dmg = 0;
+    this.lives = 3;
+    this.grace = -gracePeriod;
+    this.img = createImg('Assets/bomb.png');
     this.img.size(this.dia, this.dia);
     this.img.position(this.x - (this.dia / 2), this.y - (this.dia / 2));
 
