@@ -1,43 +1,54 @@
-let dx, dy, ax, ay, A, R, G, B, n = 1, score = 0, money = 0, value = 1, gracePeriod = 120;
-let dia = 30; v = 0.2, a = 600, earths = [];
+let dx, dy, ax, ay, A, R, G, B, n = 1, score = 0, money = 0, value = 1, gracePeriod = 120, u = 0;
+let dia = 30; v = 0.2, a = 600, upgrades = [], earths = [], bombs = [], balls = [];
 let playing = true;
 function setup() {
   frameRate(60);
   createCanvas(windowWidth, windowHeight);
   noStroke();
   for (let i = 0; i < n; i++) {
-    createEarth(i);
+    createBalls(i, "Earth");
   }
   menuButton = createImg('Assets/tandhjul.png')
   menuButton.position(20, 20);
   menuButton.size(50, 50);
   menuButton.mousePressed(pauseUnpause);
-  upgradeCount = createButton();
-  upgradeCount.mousePressed(moreEarths)
-  upgradeCount.position(100, 200)
-  upgradeCount.size(100, 50);
-  upgradeCount.cost = 25;
-  upgradeCount.hide();
-  upgradeCount.html("Extra earth" + " ($" + upgradeCount.cost + ")")
-  upgradeCount.style('background-color', color(255, 248, 220))
 
-  upgradeSpeed = createButton();
-  upgradeSpeed.mousePressed(moreSpeed)
-  upgradeSpeed.position(200, 200)
-  upgradeSpeed.size(100, 50);
-  upgradeSpeed.cost = 25;
-  upgradeSpeed.hide();
-  upgradeSpeed.html("Faster" + " ($" + upgradeSpeed.cost + ")")
-  upgradeSpeed.style('background-color', color(255, 248, 220))
+  upgradeECount = createButton();
+  upgradeECount.mousePressed(moreEarths)
+  upgradeECount.cost = 25;
+  upgradeECount.html("Extra earth" + " ($" + upgradeECount.cost + ")")
+  upgrades[u] = upgradeECount; u++;
 
-  upgradeValue = createButton();
-  upgradeValue.mousePressed(moreValue)
-  upgradeValue.position(300, 200)
-  upgradeValue.size(100, 50);
-  upgradeValue.cost = 500;
-  upgradeValue.hide();
-  upgradeValue.html("More Value" + " ($" + upgradeValue.cost + ")")
-  upgradeValue.style('background-color', color(255, 248, 220))
+  upgradeBCount = createButton(); // UpgradeBCount = Upgrade Bomb Count
+  upgradeBCount.mousePressed(moreBombs);
+  upgradeBCount.cost = 100;
+  upgradeBCount.html("Bomb ball" + " ($" + upgradeBCount.cost + ")")
+  upgrades[u] = upgradeBCount; u++;
+
+  upgradeESpeed = createButton();
+  upgradeESpeed.mousePressed(moreESpeed)
+  upgradeESpeed.cost = 25;
+  upgradeESpeed.html("Faster" + " ($" + upgradeESpeed.cost + ")")
+  upgrades[u] = upgradeESpeed; u++;
+
+  upgradeEValue = createButton();
+  upgradeEValue.mousePressed(moreEValue)
+  upgradeEValue.cost = 500;
+  upgradeEValue.html("More Value" + " ($" + upgradeEValue.cost + ")")
+  upgrades[u] = upgradeEValue; u++;
+
+  upgradeDmg = createButton();
+  upgradeDmg.mousePressed(moreDamage)
+  upgradeDmg.cost = 100;
+  upgradeDmg.html("More Damage" + " ($" + upgradeDmg.cost + ")")
+  upgrades[u] = upgradeDmg; u++;
+
+  for (let i = 0; i < upgrades.length; i++) {
+    upgrades[i].position((i + 1) * 100, 200);
+    upgrades[i].size(100, 50);
+    upgrades[i].hide();
+    upgrades[i].style('background-color', color(255, 248, 220));
+  }
 }
 
 function draw() {
@@ -45,15 +56,12 @@ function draw() {
   if (playing) {
     background(220);
     for (let i = 0; i < n; i++) {
-      if (earths[i] == null) {
-        createEarth(i)
-      }
-      earths[i].update(mouseX, mouseY);
-      if (earths[i].hit && earths[i].dmg >= earths[i].lives) {
-        score += earths[i].value;
-        money += earths[i].value;
-        earths[i].img.remove();
-        createEarth(i)
+      balls[i].update(mouseX, mouseY);
+      if (balls[i].hit && balls[i].dmg >= balls[i].lives) {
+        score += balls[i].value;
+        money += balls[i].value;
+        balls[i].img.remove();
+        createBalls(i, balls[i].type)
       }
     }
   }
@@ -74,51 +82,76 @@ function pauseUnpause() {
   if (playing == true) {
     playing = false;
     for (let i = 0; i < n; i++) {
-      earths[i].img.hide();
+      balls[i].img.hide();
     }
-    upgradeCount.show();
-    upgradeSpeed.show();
-    upgradeValue.show();
+    for (let i = 0; i < upgrades.length; i++) {
+      upgrades[i].show();
+    }
   } else {
     playing = true;
-    upgradeCount.hide();
-    upgradeSpeed.hide();
-    upgradeValue.hide();
     for (let i = 0; i < n; i++) {
-      earths[i].img.show();
+      balls[i].img.show();
+    }
+    for (let i = 0; i < upgrades.length; i++) {
+      upgrades[i].hide();
     }
   }
 }
 
 function moreEarths() {
-  if (money >= upgradeCount.cost) {
-    createEarth(n);
+  if (money >= upgradeECount.cost) {
+    createBalls(n, "Earth");
+    balls[n].img.hide();
     n++;
-    money -= upgradeCount.cost
-    upgradeCount.cost = round(upgradeCount.cost ** (1 + (3 / upgradeCount.cost)))
-    upgradeCount.html("Extra ball" + " ($" + upgradeCount.cost + ")")
+    money -= upgradeECount.cost
+    upgradeECount.cost = round(upgradeECount.cost ** (1 + (3 / upgradeECount.cost)))
+    upgradeECount.html("Extra ball" + " ($" + upgradeECount.cost + ")")
   }
 }
-function moreSpeed() {
-  if (money >= upgradeSpeed.cost) {
+
+function moreBombs() {
+  if (money >= upgradeBCount.cost) {
+    createBalls(n, "Bomb")
+    balls[n].img.hide();
+    n++;
+    money -= upgradeBCount.cost;
+    upgradeBCount.cost = round(upgradeECount.cost ** (1 + (4 / upgradeECount.cost)))
+    upgradeECount.html("Extra ball" + " ($" + upgradeECount.cost + ")")
+  }
+}
+
+function moreESpeed() {
+  if (money >= upgradeESpeed.cost) {
     v = v + 0.2
-    money -= upgradeSpeed.cost
-    upgradeSpeed.cost = round(upgradeSpeed.cost ** (1 + (3 / upgradeSpeed.cost)))
-    upgradeSpeed.html("Faster" + " ($" + upgradeSpeed.cost + ")")
+    money -= upgradeESpeed.cost
+    upgradeESpeed.cost = round(upgradeESpeed.cost ** (1 + (3 / upgradeESpeed.cost)))
+    upgradeESpeed.html("Faster" + " ($" + upgradeESpeed.cost + ")")
   }
 }
 
-function moreValue() {
-  if (money >= upgradeValue.cost) {
+function moreEValue() {
+  if (money >= upgradeEValue.cost) {
     value++
-    money -= upgradeValue.cost
-    upgradeValue.cost = round(upgradeValue.cost ** (1 + (10 / upgradeValue.cost)))
-    upgradeValue.html("More Value" + " ($" + upgradeSpeed.cost + ")")
+    money -= upgradeEValue.cost
+    upgradeEValue.cost = round(upgradeEValue.cost ** (1 + (10 / upgradeEValue.cost)))
+    upgradeEValue.html("More Value" + " ($" + upgradeEValue.cost + ")")
   }
 }
 
-function createEarth(i) {
-  earths[i] = new Earth;
+function moreDamage() {
+  if (money >= upgradeDmg.cost) {
+    Dmg++
+    money -= upgradeDmg.cost
+    upgradeDmg.cost = round(upgradeDmg.cost ** (1 + (10 / upgradeDmg.cost)))
+    upgradeDmg.html("More Damage" + " ($" + upgradeDmg.cost + ")")
+  }
+}
+function createBalls(i, type) {
+  if (type === "Earth") {
+    balls[i] = new Earth
+  } else if (type === "Bomb") {
+    balls[i] = new Bomb;
+  }
 }
 
 class Earth {
@@ -136,7 +169,6 @@ class Earth {
     this.img = createImg('Assets/earth.png');
     this.img.size(this.dia, this.dia);
     this.img.position(this.x - (this.dia / 2), this.y - (this.dia / 2));
-
   }
   update(x, y) {
     dx = x - this.x;
@@ -178,7 +210,7 @@ class Earth {
 }
 
 class Bomb {
-   constructor() {
+  constructor() {
     this.dia = 50;
     this.x = random(this.dia, width - this.dia);
     this.y = random(this.dia, height - this.dia);
