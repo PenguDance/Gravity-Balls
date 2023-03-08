@@ -120,7 +120,9 @@ class Earth {
     this.vy = random(0, 5);
     this.hit = false;
     this.value = value;
-    this.img = createImg('Assets/earth.png')
+    this.img = createImg('Assets/earth.png');
+    this.img.size(this.dia, this.dia);
+    this.img.position(this.x - (this.dia / 2), this.y - (this.dia / 2));
 
   }
   update(x, y) {
@@ -142,6 +144,7 @@ class Earth {
     this.y = this.y + this.vy;
     fill(this.R, this.G, this.B);
     circle(this.x, this.y, this.dia);
+    this.img.position(this.x - (this.dia / 2), this.y - (this.dia / 2));
     if (this.x - (this.dia / 2) <= 0 || this.x + (this.dia / 2) >= windowWidth) {
       this.vx = -this.vx;
     }
@@ -150,6 +153,7 @@ class Earth {
     }
     if (this.dist <= this.dia / 2 + dia / 2) {
       this.hit = true;
+      this.img.remove();
     }
   }
 }
