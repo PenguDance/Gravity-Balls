@@ -1,4 +1,4 @@
-let dx, dy, ax, ay, A, R, G, B, n = 1, score = 0, money = 0, value = 1, gracePeriod = 60, u = 0;
+let dx, dy, ax, ay, A, R, G, B, n = 1, score = 0, money = 0, value = 1, gracePeriod = 30, u = 0;
 let dia = 30; v = 0.2, a = 600, upgrades = [], earths = [], bombs = [], balls = [];
 let playing = true;
 function setup() {
@@ -56,14 +56,12 @@ function draw() {
   if (playing) {
     background(220);
     for (let i = 0; i < n; i++) {
-      print(balls[i].hit, balls[i].dmg, balls[i].lives)
       balls[i].update(mouseX, mouseY);
       if (balls[i].hit && balls[i].dmg >= balls[i].lives) {
         score += balls[i].value;
         money += balls[i].value;
         balls[i].img.remove();
-        balls[i] = new Earth
-        //createBalls(i, balls[i].type)
+        createBalls(i, balls[i].type)
       }
     }
   }
@@ -168,6 +166,7 @@ class Earth {
     this.dmg = 0;
     this.lives = 3;
     this.grace = -gracePeriod;
+    this.type = "Earth"
     this.img = createImg('Assets/earth.png');
     this.img.size(this.dia, this.dia);
     this.img.position(this.x - (this.dia / 2), this.y - (this.dia / 2));
@@ -223,6 +222,7 @@ class Bomb {
     this.dmg = 0;
     this.lives = 3;
     this.grace = -gracePeriod;
+    this.type = "Bomb"
     this.img = createImg('Assets/bomb.png');
     this.img.size(this.dia, this.dia);
     this.img.position(this.x - (this.dia / 2), this.y - (this.dia / 2));
