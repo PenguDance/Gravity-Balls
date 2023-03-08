@@ -1,5 +1,5 @@
 let dx, dy, ax, ay, A, R, G, B, n = 1, score = 0, money = 0, value = 1;
-let dia = 30; v = 0.2, a = 0.4, earths = [];
+let dia = 30; v = 0.2, a = 600, earths = [];
 let playing = true;
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -139,21 +139,17 @@ class Earth {
     this.dist = sqrt((dx ** 2) + (dy ** 2));
     if (dx > 0 && dy < 0) {
       this.A = -asin(dy / this.dist);
-      this.ax = cos(this.A) ** 2 * a;
-      this.ay = -(sin(this.A) ** 2) * a;
     } else if (dx > 0 && dy > 0) {
       this.A = 2 * PI - asin(dy / this.dist);
-      this.ax = cos(this.A) ** 2 * a;
-      this.ay = sin(this.A) ** 2 * a;
-    } else if (dx < 0 && dy < 0) {
-      this.A = 2 * PI - asin(dy / this.dist);
-      this.ax = -(cos(this.A) ** 2) * a;
-      this.ay = -(sin(this.A) ** 2) * a;
     } else if (dx < 0 && dy > 0) {
       this.A = PI + asin(dy / this.dist);
-      this.ax = -(cos(this.A) ** 2) * a;
-      this.ay = (sin(this.A) ** 2) * a;
+    } else if (dx < 0 && dy < 0) {
+      this.A = PI + asin(dy / this.dist);
     }
+    this.a = (100 * a) / (this.dist ** 2);
+    this.ax = cos(this.A) * this.a;
+    this.ay = -sin(this.A) * this.a;
+    print(abs(this.ax) / this.ax, abs(this.ay) / this.ay)
     this.vx = this.vx + (this.ax * v);
     this.vy = this.vy + (this.ay * v);
     this.x = this.x + this.vx;
