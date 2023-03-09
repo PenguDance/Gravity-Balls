@@ -3,10 +3,11 @@ let dia = 30; vel = 0.2, acc = 600, upgrades = [], balls = [], ballUpgrades = []
 let playing = true;
 let BGM, pointSound;
 function preload() {
-  BGM = loadSound('Assets/BGM THE BAD.mp3');
-  pointSound = loadSound('Assets/point.wav');
+  BGM = createAudio('Assets/BGM2.mp3');
+  pointSound = createAudio('Assets/point.wav');
 }
 function setup() {
+  
   frameRate(60);
   createCanvas(windowWidth * 8 / 10, windowHeight * 8 / 10);
   mouseX = width / 2;
@@ -29,6 +30,7 @@ function draw() {
         score += balls[i].value;
         money += balls[i].value;
         balls[i].img.remove();
+        pointSound.volume(0.1)
         pointSound.play();
         createBalls(i, balls[i].type)
       }
