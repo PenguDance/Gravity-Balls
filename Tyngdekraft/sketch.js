@@ -1,4 +1,4 @@
-let dx, dy, ax, ay, A, R, G, B, n = 1, score = 0, money = 0, value = 1, gracePeriod = 30, u = 0;
+let dx, dy, ax, ay, A, R, G, B, n = 1, score = 0, money = 0, value = 1, gracePeriod = 30, u = 0, Dmg = 1;
 let dia = 30; v = 0.2, a = 600, upgrades = [], earths = [], bombs = [], balls = [];
 let playing = true;
 function setup() {
