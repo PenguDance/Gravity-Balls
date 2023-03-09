@@ -191,7 +191,7 @@ class Earth {
       this.vx = this.vx + (this.ax * v);
       this.vy = this.vy + (this.ay * v);
       if (this.dist <= this.dia / 2 + dia / 2) {
-        this.dmg++;
+        this.dmg += Dmg;
         this.hit = true;
         this.grace = frameCount;
         this.vx = -this.vx;
@@ -248,7 +248,7 @@ class Bomb {
       this.vx = this.vx + (this.ax * v);
       this.vy = this.vy + (this.ay * v);
       if (this.dist <= this.dia / 2 + dia / 2) {
-        this.dmg++;
+        this.dmg += Dmg;
         this.hit = true;
         this.grace = frameCount;
         this.vx = -this.vx;
