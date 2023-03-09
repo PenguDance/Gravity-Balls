@@ -52,6 +52,7 @@ function buttons() {
 }
 
 function hideButtons() {
+    print("hideButtons")
     for (let i = 0; i < ballUpgrades[i].length;i++) {
         ballUpgrades[i].hide();
     }

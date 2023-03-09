@@ -1,10 +1,10 @@
 let dx, dy, ax, ay, A, R, G, B, n = 1, score = 0, money = 0, value = 1, gracePeriod = 30, u = 0, Dmg = 1, mass = 10;
 let dia = 30; vel = 0.2, acc = 600, upgrades = [], balls = [], ballUpgrades = [], bU = 0, menu = 0;
 let playing = true;
-let BGM, rek1;
+let BGM, pointSound;
 function preload() {
   BGM = loadSound('Assets/BGM THE BAD.mp3');
-  rek1 = loadSound('Assets/mcdRek.mp3');
+  pointSound = loadSound('Assets/point.wav');
 }
 function setup() {
   frameRate(60);
@@ -29,7 +29,7 @@ function draw() {
         score += balls[i].value;
         money += balls[i].value;
         balls[i].img.remove();
-        rek1.play();
+        pointSound.play();
         createBalls(i, balls[i].type)
       }
     }
