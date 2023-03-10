@@ -1,22 +1,45 @@
-let dx, dy, ax, ay, A, R, G, B, n = 1, score = 0, money = 0, value = 1, gracePeriod = 30, u = 0, Dmg = 1, mass = 10;
-let dia = 30; vel = 0.2, acc = 600, upgrades = [], balls = [], ballUpgrades = [], bU = 0, menu = 0;
+let dx,
+  dy,
+  ax,
+  ay,
+  A,
+  R,
+  G,
+  B,
+  n = 1,
+  score = 0,
+  money = 0,
+  value = 1,
+  gracePeriod = 30,
+  u = 0,
+  Dmg = 1,
+  mass = 10;
+let dia = 30,
+  vel = 0.2,
+  acc = 600,
+  upgrades = [],
+  balls = [],
+  ballUpgrades = [],
+  bU = 0,
+  menu = 0,
+  ballText,
+  divs = [];
 let playing = true;
 let BGM, pointSound;
 function preload() {
-  BGM = createAudio('Assets/BGM2.mp3');
-  pointSound = createAudio('Assets/point.wav');
+  BGM = createAudio("Assets/BGM2.mp3");
+  pointSound = createAudio("Assets/point.wav");
 }
 function setup() {
-  
   frameRate(60);
-  createCanvas(windowWidth * 8 / 10, windowHeight * 8 / 10);
+  createCanvas((windowWidth * 8) / 10, (windowHeight * 8) / 10);
   mouseX = width / 2;
   mouseY = height / 2;
   noStroke();
   for (let i = 0; i < n; i++) {
     createBalls(i, "Earth");
   }
-  buttons()
+  buttons();
   mainMenu();
 }
 
@@ -30,9 +53,9 @@ function draw() {
         score += balls[i].value;
         money += balls[i].value;
         balls[i].img.remove();
-        pointSound.volume(0.1)
+        pointSound.volume(0.1);
         pointSound.play();
-        createBalls(i, balls[i].type)
+        createBalls(i, balls[i].type);
       }
     }
   }
@@ -41,7 +64,13 @@ function draw() {
   fill(0);
   textAlign(CENTER);
   textSize(20);
-  text("points = " + score + "        " + "money = $" + money, 0, 0, width, 100)
+  text(
+    "points = " + score + "        " + "money = $" + money,
+    0,
+    0,
+    width,
+    100
+  );
 }
 function keyPressed() {
   if (keyCode === 27) {
@@ -49,76 +78,81 @@ function keyPressed() {
   }
 }
 
-
-
 function moreEarths() {
   if (money >= upgradeECount.cost) {
     createBalls(n, "Earth");
     balls[n].img.hide();
     n++;
-    money -= upgradeECount.cost
-    upgradeECount.cost = round(upgradeECount.cost ** (1 + (3 / upgradeECount.cost)))
-    upgradeECount.html("Extra ball" + " ($" + upgradeECount.cost + ")")
+    money -= upgradeECount.cost;
+    upgradeECount.cost = round(
+      upgradeECount.cost ** (1 + 3 / upgradeECount.cost)
+    );
+    upgradeECount.html("Extra ball" + " ($" + upgradeECount.cost + ")");
   }
 }
 
 function moreBombs() {
   if (money >= upgradeBCount.cost) {
-    createBalls(n, "Bomb")
+    createBalls(n, "Bomb");
     balls[n].img.hide();
     n++;
     money -= upgradeBCount.cost;
-    upgradeBCount.cost = round(upgradeECount.cost ** (1 + (4 / upgradeECount.cost)))
-    upgradeECount.html("Extra ball" + " ($" + upgradeECount.cost + ")")
+    upgradeBCount.cost = round(
+      upgradeECount.cost ** (1 + 4 / upgradeECount.cost)
+    );
+    upgradeECount.html("Extra ball" + " ($" + upgradeECount.cost + ")");
   }
 }
 
 function moreESpeed() {
   if (money >= upgradeESpeed.cost) {
-    vel = vel + 0.2
-    money -= upgradeESpeed.cost
-    upgradeESpeed.cost = round(upgradeESpeed.cost ** (1 + (3 / upgradeESpeed.cost)))
-    upgradeESpeed.html("Faster" + " ($" + upgradeESpeed.cost + ")")
+    vel = vel + 0.2;
+    money -= upgradeESpeed.cost;
+    upgradeESpeed.cost = round(
+      upgradeESpeed.cost ** (1 + 3 / upgradeESpeed.cost)
+    );
+    upgradeESpeed.html("Faster" + " ($" + upgradeESpeed.cost + ")");
   }
 }
 
 function moreEValue() {
   if (money >= upgradeEValue.cost) {
-    value++
-    money -= upgradeEValue.cost
-    upgradeEValue.cost = round(upgradeEValue.cost ** (1 + (10 / upgradeEValue.cost)))
-    upgradeEValue.html("More Value" + " ($" + upgradeEValue.cost + ")")
+    value++;
+    money -= upgradeEValue.cost;
+    upgradeEValue.cost = round(
+      upgradeEValue.cost ** (1 + 10 / upgradeEValue.cost)
+    );
+    upgradeEValue.html("More Value" + " ($" + upgradeEValue.cost + ")");
   }
 }
 
 function moreDamage() {
   if (money >= upgradeDmg.cost) {
-    Dmg++
-    money -= upgradeDmg.cost
-    upgradeDmg.cost = round(upgradeDmg.cost ** (1 + (10 / upgradeDmg.cost)))
-    upgradeDmg.html("More Damage" + " ($" + upgradeDmg.cost + ")")
+    Dmg++;
+    money -= upgradeDmg.cost;
+    upgradeDmg.cost = round(upgradeDmg.cost ** (1 + 10 / upgradeDmg.cost));
+    upgradeDmg.html("More Damage" + " ($" + upgradeDmg.cost + ")");
   }
 }
 function createBalls(i, type) {
   if (type === "Earth") {
-    balls[i] = new Earth
+    balls[i] = new Earth();
   } else if (type === "Bomb") {
-    balls[i] = new Bomb;
+    balls[i] = new Bomb();
   }
 }
 
 function angle(i) {
   if (balls[i].dx > 0 && balls[i].dy < 0) {
-    balls[i].A = (-asin(balls[i].dy / balls[i].dist))
+    balls[i].A = -asin(balls[i].dy / balls[i].dist);
   } else if (balls[i].dx > 0 && balls[i].dy > 0) {
-    balls[i].A = (2 * PI - asin(balls[i].dy / balls[i].dist))
+    balls[i].A = 2 * PI - asin(balls[i].dy / balls[i].dist);
   } else if (balls[i].dx < 0 && balls[i].dy > 0) {
-    balls[i].A = (PI + asin(balls[i].dy / balls[i].dist));
+    balls[i].A = PI + asin(balls[i].dy / balls[i].dist);
   } else if (balls[i].dx < 0 && balls[i].dy < 0) {
-    balls[i].A = (PI + asin(balls[i].dy / balls[i].dist));
+    balls[i].A = PI + asin(balls[i].dy / balls[i].dist);
   }
 }
-
 
 class Earth {
   constructor(i) {
@@ -132,24 +166,24 @@ class Earth {
     this.dmg = 0;
     this.lives = 1;
     this.grace = -gracePeriod;
-    this.type = "Earth"
-    this.img = createImg('Assets/earth.png');
+    this.type = "Earth";
+    this.img = createImg("Assets/earth.png");
     this.img.size(this.dia, this.dia);
-    this.img.position(this.x - (this.dia / 2), this.y - (this.dia / 2));
+    this.img.position(this.x - this.dia / 2, this.y - this.dia / 2);
   }
   update(x, y, i) {
     this.dx = x - this.x;
     this.dy = y - this.y;
-    this.dist = sqrt((this.dx ** 2) + (this.dy ** 2));
+    this.dist = sqrt(this.dx ** 2 + this.dy ** 2);
     this.A = 0;
-    angle(i)
+    angle(i);
 
     if (this.grace + gracePeriod <= frameCount) {
-      this.a = (100 * acc) / ((this.dist + dia / 2 + this.dia / 2) ** 2);
+      this.a = (100 * acc) / (this.dist + dia / 2 + this.dia / 2) ** 2;
       this.ax = cos(this.A) * this.a;
       this.ay = -sin(this.A) * this.a;
-      this.vx = this.vx + (this.ax * vel);
-      this.vy = this.vy + (this.ay * vel);
+      this.vx = this.vx + this.ax * vel;
+      this.vy = this.vy + this.ay * vel;
       if (this.dist <= this.dia / 2 + dia / 2) {
         this.dmg += Dmg;
         this.hit = true;
@@ -160,11 +194,11 @@ class Earth {
     }
     this.x = this.x + this.vx;
     this.y = this.y + this.vy;
-    this.img.position(this.x - (this.dia / 2), this.y - (this.dia / 2));
-    if (this.x - (this.dia / 2) <= 0 || this.x + (this.dia / 2) >= width) {
+    this.img.position(this.x - this.dia / 2, this.y - this.dia / 2);
+    if (this.x - this.dia / 2 <= 0 || this.x + this.dia / 2 >= width) {
       this.vx = -this.vx;
     }
-    if (this.y - (this.dia / 2) <= 0 || this.y + (this.dia / 2) >= height) {
+    if (this.y - this.dia / 2 <= 0 || this.y + this.dia / 2 >= height) {
       this.vy = -this.vy;
     }
   }
