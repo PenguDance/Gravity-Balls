@@ -7,7 +7,7 @@ function preload() {
   pointSound = createAudio('Assets/point.wav');
 }
 function setup() {
-  
+
   frameRate(60);
   createCanvas(windowWidth * 8 / 10, windowHeight * 8 / 10);
   mouseX = width / 2;
@@ -75,7 +75,7 @@ function moreBombs() {
 
 function moreESpeed() {
   if (money >= upgradeESpeed.cost) {
-    vel = vel + 0.2
+    vel = vel * 1.03
     money -= upgradeESpeed.cost
     upgradeESpeed.cost = round(upgradeESpeed.cost ** (1 + (3 / upgradeESpeed.cost)))
     upgradeESpeed.html("Faster" + " ($" + upgradeESpeed.cost + ")")
