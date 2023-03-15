@@ -106,7 +106,7 @@ function moreBombs() {
 
 function moreESpeed() {
   if (money >= upgradeESpeed.cost) {
-    vel = vel + 0.2;
+    vel = vel * 1.03;
     money -= upgradeESpeed.cost;
     upgradeESpeed.cost = round(
       upgradeESpeed.cost ** (1 + 3 / upgradeESpeed.cost)
