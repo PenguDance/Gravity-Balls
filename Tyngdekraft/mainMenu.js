@@ -8,6 +8,7 @@ function mainMenu() {
     } else {
         BGM.volume(0.2)
         BGM.loop();
+        ballUpgradeButton.style('background-color', color(255, 248, 220));
         ballUpgradeButton.hide();
         hideButtons();
         for (let i = 0; i < n; i++) {

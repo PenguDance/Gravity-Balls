@@ -1,4 +1,4 @@
-let dx, dy, ax, ay, A, R, G, B, n = 1, score = 0, money = 0, value = 1, gracePeriod = 30, u = 0, Dmg = 1, mass = 10;
+let dx, dy, ax, ay, A, R, G, B, n = 1, score = 0, money = 0, Evalue = 1, gracePeriod = 30, u = 0, Dmg = 1, mass = 10;
 let dia = 30; vel = 0.2, acc = 600, upgrades = [], balls = [], ballUpgrades = [], bU = 0, menu = 0;
 let playing = true;
 let BGM, pointSound;
@@ -101,9 +101,22 @@ function moreDamage() {
 }
 function createBalls(i, type) {
   if (type === "Earth") {
-    balls[i] = new Earth
+    balls[i] = new Planet("earth", 'Assets/earth.png');
+    balls[i].value = Evalue;
+    balls[i].lives = 1;
+    balls[i].type = type
   } else if (type === "Bomb") {
     balls[i] = new Bomb;
+    balls[i].value = Bvalue;
+    balls[i].lives = 5;
+    balls[i].type = type
+    balls[i].img = createImg('Assets/bomb.png')
+  } else if (type === "Splitter") {
+    balls[i] = new Splitter;
+    balls[i].value = Svalue;
+    balls[i].lives = 1;
+    balls[i].type = type
+    balls[i].img = createImg('Assets/splitter.png')
   }
 }
 
@@ -120,20 +133,20 @@ function angle(i) {
 }
 
 
-class Earth {
-  constructor(i) {
+class Planet {
+  constructor(type, image) {
     this.dia = 50;
     this.x = random(this.dia, width - this.dia);
     this.y = random(this.dia, height - this.dia);
     this.vx = random(0, 5);
     this.vy = random(0, 5);
-    this.value = value;
+    this.value = null
     this.hit = false;
     this.dmg = 0;
-    this.lives = 1;
+    this.lives = null
     this.grace = -gracePeriod;
-    this.type = "Earth"
-    this.img = createImg('Assets/earth.png');
+    this.type = null;
+    this.img = createImg('Assets/' + type + '.png');
     this.img.size(this.dia, this.dia);
     this.img.position(this.x - (this.dia / 2), this.y - (this.dia / 2));
   }
