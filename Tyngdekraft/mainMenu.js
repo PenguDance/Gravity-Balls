@@ -16,4 +16,6 @@ function mainMenu() {
         }
         playing = true;
     }
+    menu = 1;
+    ballUpgradeButton.show();
 }
