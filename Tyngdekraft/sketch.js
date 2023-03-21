@@ -1,7 +1,7 @@
-let dx, dy, ax, ay, A, R, G, B, n = 1, score = 0, money = 100, Evalue = 1, Svalue = 1, gracePeriod = 30, u = 0, Dmg = 1, mass = 10;
+let dx, dy, ax, ay, A, R, G, B, n = 1, score = 0, money = 100, Elives = 1, Evalue = 1, gracePeriod = 30, u = 0, Dmg = 1, mass = 10;
 let dia = 30; vel = 0.2, acc = 600, upgrades = [], balls = [], ballUpgrades = [], bU = 0, menu = 0;
-let Bvalue = 2, ExRad = 200, ExDmg = 2, ExIMG, ExVisual = 60, ExPos = [], ExSize = ExRad * 2;
-let splitballs = [], SDmg = 1;
+let Bvalue = 2, ExRad = 200, ExDmg = 2, ExIMG, ExVisual = 60, ExSize = ExRad * 2;
+let splitballs = [], Svalue = 2, Slives = 5, SDmg = 1, SBounce = 0;
 let playing = true, test;
 let BGM, pointSound;
 function preload() {
@@ -53,14 +53,14 @@ function draw() {
         continue
       } else if (splitballs[i].x - splitballs[i].dia / 2 <= 0 || splitballs[i].x + splitballs[i].dia / 2 >= width ||
         splitballs[i].y - splitballs[i].dia / 2 <= 0 || splitballs[i].y + splitballs[i].dia / 2 >= height) {
-        splitballs[i].remove
+        splitballs[i].img.hide();
         splitballs[i] = null;
       } else {
         splitballs[i].update()
         for (let I = 0; I < n; I++) {
-          print(splitballs[i].x, splitballs[i].y, balls[I].x, balls[I].y)
           let distance = sqrt((splitballs[i].x - balls[I].x) ** 2 + (splitballs[i].y - balls[I].y) ** 2)
           if (distance <= (splitballs[i].dia + balls[I].dia) / 2) {
+            splitballs[i].img.hide();
             splitballs[i] = null;
             balls[I].dmg = SDmg;
             balls[I].hit = true;
@@ -103,17 +103,17 @@ function createBalls(i, type) {
   if (type === "Earth") {
     balls[i] = new Planet("earth");
     balls[i].value = Evalue;
-    balls[i].lives = 1;
+    balls[i].lives = Elives;
     balls[i].type = type
   } else if (type === "Bomb") {
     balls[i] = new Planet("bomb");
     balls[i].value = Bvalue;
-    balls[i].lives = 3;
+    balls[i].lives = Blives;
     balls[i].type = type;
   } else if (type === "Splitter") {
     balls[i] = new Planet("splitter");
     balls[i].value = Svalue;
-    balls[i].lives = 1;
+    balls[i].lives = Slives;
     balls[i].type = type
   }
 }
