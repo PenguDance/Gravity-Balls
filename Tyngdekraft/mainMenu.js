@@ -4,18 +4,19 @@ function mainMenu() {
         for (let i = 0; i < n; i++) {
             balls[i].img.hide();
         }
+        menu = 1;
+        ballCountButton.show();
         ballUpgradeButton.show();
     } else {
         BGM.volume(0.2)
         BGM.loop();
-        ballUpgradeButton.style('background-color', color(255, 248, 220));
-        ballUpgradeButton.hide();
         hideButtons();
+        ballCountButton.hide();
+        ballUpgradeButton.hide();
         for (let i = 0; i < n; i++) {
             balls[i].img.show();
         }
         playing = true;
+        menu = 0;
     }
-    menu = 1;
-    ballUpgradeButton.show();
 }

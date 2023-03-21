@@ -1,12 +1,18 @@
-let dx, dy, ax, ay, A, R, G, B, n = 1, score = 0, money = 0, Evalue = 1, gracePeriod = 30, u = 0, Dmg = 1, mass = 10;
+let dx, dy, ax, ay, A, R, G, B, n = 1, score = 0, money = 100, Evalue = 1, Svalue = 1, gracePeriod = 30, u = 0, Dmg = 1, mass = 10;
 let dia = 30; vel = 0.2, acc = 600, upgrades = [], balls = [], ballUpgrades = [], bU = 0, menu = 0;
-let playing = true;
+let Bvalue = 2, ExRad = 200, ExDmg = 2, ExIMG, ExVisual = 60, ExPos = [], ExSize = ExRad * 2;
+let splitballs = [], SDmg = 1;
+let playing = true, test;
 let BGM, pointSound;
 function preload() {
   BGM = createAudio("Assets/BGM2.mp3");
   pointSound = createAudio("Assets/point.wav");
+  test = loadImage("assets/explosion.png")
+
+
 }
 function setup() {
+
   frameRate(60);
   createCanvas((windowWidth * 8) / 10, (windowHeight * 8) / 10);
   mouseX = width / 2;
@@ -17,6 +23,9 @@ function setup() {
   }
   buttons();
   mainMenu();
+  ExIMG = createImg('Assets/explosion.png');
+  ExIMG.size(ExRad * 2, ExRad * 2);
+  ExIMG.hide();
 }
 
 function draw() {
@@ -28,10 +37,38 @@ function draw() {
       if (balls[i].hit && balls[i].dmg >= balls[i].lives) {
         score += balls[i].value;
         money += balls[i].value;
+        if (balls[i].type === 'Bomb') {
+          explosion(i)
+        } else if (balls[i].type === 'Splitter') {
+          splitballs[splitballs.length] = new SplitBalls(i);
+        }
         balls[i].img.remove();
         pointSound.volume(0.1);
         pointSound.play();
         createBalls(i, balls[i].type);
+      }
+    }
+    for (let i = 0; i < splitballs.length; i++) {
+      if (splitballs[i] == null) {
+        continue
+      } else if (splitballs[i].x - splitballs[i].dia / 2 <= 0 || splitballs[i].x + splitballs[i].dia / 2 >= width ||
+        splitballs[i].y - splitballs[i].dia / 2 <= 0 || splitballs[i].y + splitballs[i].dia / 2 >= height) {
+        splitballs[i].remove
+        splitballs[i] = null;
+      } else {
+        splitballs[i].update()
+        for (let I = 0; I < n; I++) {
+          print(splitballs[i].x, splitballs[i].y, balls[I].x, balls[I].y)
+          let distance = sqrt((splitballs[i].x - balls[I].x) ** 2 + (splitballs[i].y - balls[I].y) ** 2)
+          if (distance <= (splitballs[i].dia + balls[I].dia) / 2) {
+            splitballs[i] = null;
+            balls[I].dmg = SDmg;
+            balls[I].hit = true;
+            break;
+          }
+
+        }
+
       }
     }
   }
@@ -47,6 +84,14 @@ function draw() {
     width,
     100
   );
+  if (ExIMG.time + ExVisual <= frameCount) {
+    ExIMG.hide();
+  } else if (ExIMG.time + ExVisual > frameCount) {
+    tint(255, 4 * (ExIMG.time + ExVisual - frameCount));
+    image(test, ExIMG.x, ExIMG.y, ExSize);
+  }
+
+
 }
 function keyPressed() {
   if (keyCode === 27) {
@@ -54,80 +99,22 @@ function keyPressed() {
   }
 }
 
-function moreEarths() {
-  if (money >= upgradeECount.cost) {
-    createBalls(n, "Earth");
-    balls[n].img.hide();
-    n++;
-    money -= upgradeECount.cost;
-    upgradeECount.cost = round(
-      upgradeECount.cost ** (1 + 3 / upgradeECount.cost)
-    );
-    upgradeECount.html("Extra ball" + " ($" + upgradeECount.cost + ")");
-  }
-}
-
-function moreBombs() {
-  if (money >= upgradeBCount.cost) {
-    createBalls(n, "Bomb");
-    balls[n].img.hide();
-    n++;
-    money -= upgradeBCount.cost;
-    upgradeBCount.cost = round(
-      upgradeECount.cost ** (1 + 4 / upgradeECount.cost)
-    );
-    upgradeECount.html("Extra ball" + " ($" + upgradeECount.cost + ")");
-  }
-}
-
-function moreESpeed() {
-  if (money >= upgradeESpeed.cost) {
-    vel = vel * 1.03;
-    money -= upgradeESpeed.cost;
-    upgradeESpeed.cost = round(
-      upgradeESpeed.cost ** (1 + 3 / upgradeESpeed.cost)
-    );
-    upgradeESpeed.html("Faster" + " ($" + upgradeESpeed.cost + ")");
-  }
-}
-
-function moreEValue() {
-  if (money >= upgradeEValue.cost) {
-    value++;
-    money -= upgradeEValue.cost;
-    upgradeEValue.cost = round(
-      upgradeEValue.cost ** (1 + 10 / upgradeEValue.cost)
-    );
-    upgradeEValue.html("More Value" + " ($" + upgradeEValue.cost + ")");
-  }
-}
-
-function moreDamage() {
-  if (money >= upgradeDmg.cost) {
-    Dmg++;
-    money -= upgradeDmg.cost;
-    upgradeDmg.cost = round(upgradeDmg.cost ** (1 + 10 / upgradeDmg.cost));
-    upgradeDmg.html("More Damage" + " ($" + upgradeDmg.cost + ")");
-  }
-}
 function createBalls(i, type) {
   if (type === "Earth") {
-    balls[i] = new Planet("earth", 'Assets/earth.png');
+    balls[i] = new Planet("earth");
     balls[i].value = Evalue;
     balls[i].lives = 1;
     balls[i].type = type
   } else if (type === "Bomb") {
-    balls[i] = new Bomb;
+    balls[i] = new Planet("bomb");
     balls[i].value = Bvalue;
-    balls[i].lives = 5;
-    balls[i].type = type
-    balls[i].img = createImg('Assets/bomb.png')
+    balls[i].lives = 3;
+    balls[i].type = type;
   } else if (type === "Splitter") {
-    balls[i] = new Splitter;
+    balls[i] = new Planet("splitter");
     balls[i].value = Svalue;
     balls[i].lives = 1;
     balls[i].type = type
-    balls[i].img = createImg('Assets/splitter.png')
   }
 }
 
@@ -142,10 +129,45 @@ function angle(i) {
     balls[i].A = PI + asin(balls[i].dy / balls[i].dist);
   }
 }
+function explosion(i) {
+  ExIMG.position(balls[i].x - ExRad, balls[i].y - ExRad)
+  ExIMG.time = frameCount;
+  for (let t = 0; t < balls.length; t++) {
+    if (t == i) {
+      continue;
+    } else {
+      if (sqrt((balls[t].x - balls[i].x) ** 2 + (balls[t].y - balls[i].y) ** 2) <= balls[t].dia / 2 + ExRad) {
+        balls[t].dmg += ExDmg;
+        balls[t].hit = true;
+      }
+    }
+  }
+}
 
 
+class SplitBalls {
+  constructor(i) {
+    this.x = balls[i].x;
+    this.y = balls[i].y;
+    this.type = 'Split';
+    this.dia = 25;
+    this.img = createImg('Assets/split.png');
+    this.img.size(this.dia, this.dia);
+    this.img.position(this.x, this.y);
+    this.lives = 1;
+    this.v = sqrt(balls[i].vx ** 2 + balls[i].vy ** 2)
+    this.A = random(2 * PI);
+    this.vx = this.v * cos(this.A);
+    this.vy = this.v * sin(this.A);
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.img.position(this.x, this.y);
+  }
+}
 class Planet {
-  constructor(type, image) {
+  constructor(type) {
     this.dia = 50;
     this.x = random(this.dia, width - this.dia);
     this.y = random(this.dia, height - this.dia);
@@ -168,7 +190,7 @@ class Planet {
     this.A = 0;
     angle(i);
 
-    if (this.grace + gracePeriod <= frameCount) {
+    if (this.grace + gracePeriod <= frameCount && this.type !== 'Split') {
       this.a = (100 * acc) / (this.dist + dia / 2 + this.dia / 2) ** 2;
       this.ax = cos(this.A) * this.a;
       this.ay = -sin(this.A) * this.a;
