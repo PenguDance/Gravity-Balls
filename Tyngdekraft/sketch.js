@@ -41,7 +41,7 @@ let BGM, pointSound;
 function preload() {
   BGM = createAudio("Assets/BGM2.mp3");
   pointSound = createAudio("Assets/point.wav");
-  test = loadImage("assets/explosion.png");
+  test = loadImage("Assets/explosion.png");
 }
 function setup() {
   frameRate(60);
