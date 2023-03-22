@@ -7,7 +7,7 @@ function moreEarths() {
     upgradeECount.cost = round(
       upgradeECount.cost ** (1 + 3 / upgradeECount.cost)
     );
-    upgradeECount.html("Extra ball" + " ($" + upgradeECount.cost + ")");
+    upgradeECount.html("Earth" + " ($" + upgradeECount.cost + ")");
   }
 }
 
@@ -26,12 +26,14 @@ function moreBombs() {
 
 function moreSplitters() {
   if (money >= upgradeSCount.cost) {
-    createBalls(n,"Splitter");
+    createBalls(n, "Splitter");
     balls[n].img.hide();
-    n++
+    n++;
     money -= upgradeSCount.cost;
-    upgradeSCount.cost = round(upgradeSCount.cost ** (1+4/upgradeSCount.cost));
-    upgradeSCount.html("Splitter Ball "+"($"+upgradeSCount.cost+")")
+    upgradeSCount.cost = round(
+      upgradeSCount.cost ** (1 + 4 / upgradeSCount.cost)
+    );
+    upgradeSCount.html("Splitter Ball " + "($" + upgradeSCount.cost + ")");
   }
 }
 
@@ -67,9 +69,11 @@ function moreEDamage() {
 }
 
 function moreSpikeBalls() {
-    if (money >= upgradeSPCount.cost) {
-        money -= upgradeSPCount.cost;
-        upgradeSPCount.cost = round(upgradeSPCount.cost ** (1+10/upgradeSPCount.cost));
-        upgradeSPCount.html("More Spikes"+" ($"+upgradeSPCount.cost+")");
-    }
+  if (money >= upgradeSPCount.cost) {
+    money -= upgradeSPCount.cost;
+    upgradeSPCount.cost = round(
+      upgradeSPCount.cost ** (1 + 10 / upgradeSPCount.cost)
+    );
+    upgradeSPCount.html("More Spikes" + " ($" + upgradeSPCount.cost + ")");
+  }
 }

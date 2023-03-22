@@ -13,46 +13,46 @@ function buttons() {
   ballCountButton.hide();
 
   ballUpgradeButton = createButton();
-  ballUpgradeButton.position(200,100);
+  ballUpgradeButton.position(200, 100);
   ballUpgradeButton.mousePressed(ballUpgradeMenu);
   ballUpgradeButton.html("Upgrade Balls");
-  ballUpgradeButton.size(100,50);
-  ballUpgradeButton.style("background-color",color(255,248, 220))
+  ballUpgradeButton.size(100, 50);
+  ballUpgradeButton.style("background-color", color(255, 248, 220));
   ballUpgradeButton.hide();
 
   upgradeECount = createButton();
   upgradeECount.mousePressed(moreEarths);
   upgradeECount.cost = 25;
-  upgradeECount.html("Extra earth" + " ($" + upgradeECount.cost + ")");
-  upgradeECount.position(100,200)
-  upgradeECount.menu = 2
+  upgradeECount.html("Earth" + " ($" + upgradeECount.cost + ")");
+  upgradeECount.position(100, 200);
+  upgradeECount.menu = 2;
   ballUpgrades[u] = upgradeECount;
   u++;
 
   upgradeBCount = createButton(); // UpgradeBCount = Upgrade Bomb Count
   upgradeBCount.mousePressed(moreBombs);
   upgradeBCount.cost = 100;
-  upgradeBCount.html("Bomb ball" + " ($" + upgradeBCount.cost + ")")
-  upgradeBCount.position(225,200)
-  upgradeBCount.menu = 2
+  upgradeBCount.html("Bomb ball" + " ($" + upgradeBCount.cost + ")");
+  upgradeBCount.position(225, 200);
+  upgradeBCount.menu = 2;
   ballUpgrades[u] = upgradeBCount;
   u++;
 
   upgradeSCount = createButton();
   upgradeSCount.mousePressed(moreSplitters);
   upgradeSCount.cost = 100;
-  upgradeSCount.html("Splitter Ball "+"($"+upgradeSCount.cost+")")
-  upgradeSCount.position(350,200);
-  upgradeSCount.menu = 2
-  ballUpgrades[u]=upgradeSCount;
+  upgradeSCount.html("Splitter Ball " + "($" + upgradeSCount.cost + ")");
+  upgradeSCount.position(350, 200);
+  upgradeSCount.menu = 2;
+  ballUpgrades[u] = upgradeSCount;
   u++;
 
   upgradeESpeed = createButton();
   upgradeESpeed.mousePressed(moreESpeed);
   upgradeESpeed.cost = 25;
   upgradeESpeed.html("Faster" + " ($" + upgradeESpeed.cost + ")");
-  upgradeESpeed.position(100,200)
-  upgradeESpeed.menu = 3;
+  upgradeESpeed.position(100, 275);
+  upgradeESpeed.menu = 2;
   ballUpgrades[u] = upgradeESpeed;
   u++;
 
@@ -60,8 +60,8 @@ function buttons() {
   upgradeEValue.mousePressed(moreEValue);
   upgradeEValue.cost = 500;
   upgradeEValue.html("More Value" + " ($" + upgradeEValue.cost + ")");
-  upgradeEValue.position(225,200);
-  upgradeEValue.menu = 3;
+  upgradeEValue.position(100, 325);
+  upgradeEValue.menu = 2;
   ballUpgrades[u] = upgradeEValue;
   u++;
 
@@ -69,20 +69,37 @@ function buttons() {
   upgradeEDmg.mousePressed(moreEDamage);
   upgradeEDmg.cost = 100;
   upgradeEDmg.html("More Damage" + " ($" + upgradeEDmg.cost + ")");
-  upgradeEDmg.position(350,200)
-  upgradeEDmg.menu = 3;
+  upgradeEDmg.position(100, 375);
+  upgradeEDmg.menu = 2;
   ballUpgrades[u] = upgradeEDmg;
   u++;
 
-  upgradeSPCount = createButton()
-  upgradeSPCount.mousePressed(moreSpikeBalls)
+  upgradeSPCount = createButton();
+  upgradeSPCount.mousePressed(moreSpikeBalls);
   upgradeSPCount.cost = 150;
-  upgradeSPCount.html("More Spikes"+" ($"+upgradeSPCount.cost+")");
-  upgradeSPCount.position(475,200);
-  upgradeSPCount.menu = 3;
+  upgradeSPCount.html("More Spikes" + " ($" + upgradeSPCount.cost + ")");
+  upgradeSPCount.position(350, 275);
+  upgradeSPCount.menu = 2;
   ballUpgrades[u] = upgradeSPCount;
-  u++
+  u++;
 
+  loadCookies = createButton();
+  loadCookies.mousePressed(getCookie);
+  loadCookies.cost = 0;
+  loadCookies.html("loadCookies" + " ($" + loadCookies.cost + ")");
+  loadCookies.position(450, 275);
+  loadCookies.menu = 2;
+  ballUpgrades[u] = loadCookies;
+  u++;
+
+  setCookies = createButton();
+  setCookies.mousePressed(setCookie);
+  setCookies.cost = 0;
+  setCookies.html("setCookies" + " ($" + setCookies.cost + ")");
+  setCookies.position(550, 275);
+  setCookies.menu = 2;
+  ballUpgrades[u] = setCookies;
+  u++;
 
   for (let i = 0; i < ballUpgrades.length; i++) {
     ballUpgrades[i].size(100, 50);
@@ -107,7 +124,7 @@ function hideButtons() {
 
 function showButtons(menuNumber) {
   hideButtons();
-  for (let i = 0;i<ballUpgrades.length;i++) {
+  for (let i = 0; i < ballUpgrades.length; i++) {
     if (ballUpgrades[i].menu == menuNumber) {
       ballUpgrades[i].show();
     } else {
