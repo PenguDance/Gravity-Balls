@@ -5,32 +5,31 @@ function buttons() {
   menuButton.size(50, 50);
   menuButton.mousePressed(mainMenu);
 
-  ballCountButton = createButton();
-  ballCountButton.position(100, 100);
-  ballCountButton.mousePressed(ballCountMenu);
-  ballCountButton.html("Balls");
-  ballCountButton.size(100, 50);
-  ballCountButton.style("background-color", color(255, 248, 220));
-  ballCountButton.style("border-width", "5px");
-  ballCountButton.style("border-color", color(0, 0, 0));
-  ballCountButton.hide();
+  for (let i = 0; i < 3; i++) {
+    mainMenuButtons[i] = createButton();
+    mainMenuButtons[i].position(100 + 100 * i, 100);
+    mainMenuButtons[i].html("Balls");
+    mainMenuButtons[i].size(100, 50);
+    mainMenuButtons[i].style("background-color", color(255, 248, 220));
+    mainMenuButtons[i].style("border-width", "5px");
+    mainMenuButtons[i].style("border-color", color(0, 0, 0));
+    mainMenuButtons[i].hide();
+    if (i == 0) {
+      mainMenuButtons[i].html("Balls");
+      mainMenuButtons[i].mousePressed(ballCountMenu);
+    } else if (i == 1) {
+      mainMenuButtons[i].html("Upgrades");
+      mainMenuButtons[i].mousePressed(ballUpgradeMenu);
+    } else if (i == 2) {
+      mainMenuButtons[i].html("Cookies");
+      mainMenuButtons[i].mousePressed(cookieButtonMenu);
+    }
+  }
 
-  ballUpgradeButton = createButton();
-  ballUpgradeButton.position(200, 100);
-  ballUpgradeButton.mousePressed(ballUpgradeMenu);
-  ballUpgradeButton.html("Upgrade Balls");
-  ballUpgradeButton.size(100, 50);
-  ballUpgradeButton.style("background-color", color(255, 248, 220));
-  ballUpgradeButton.style("border-width", "5px");
-  ballUpgradeButton.hide();
-
-  cookieButton = createButton();
-  cookieButton.position(300, 100);
-  cookieButton.mousePressed(cookieButtonMenu);
-  cookieButton.html("Cookies");
-  cookieButton.size(100, 50);
-  cookieButton.style("background-color", color(255, 248, 220));
-  cookieButton.style("border-width", "5px"), cookieButton.hide();
+  // Earth upgrade buttons
+  for (let i = 0; i < 3; i++) {
+    earthUpgrades[i] = createButton();
+  }
 
   upgradeEC = createButton();
   upgradeEC.mousePressed(moreE);
@@ -43,7 +42,7 @@ function buttons() {
   u++;
 
   upgradeBC = createButton(); // upgradeBC = Upgrade Bomb Count
-  upgradeBC.mousePressed(moreE);
+  upgradeBC.mousePressed(moreB);
   upgradeBC.cost = 100;
   upgradeBC.html("Bomb ball" + " ($" + upgradeBC.cost + ")");
   upgradeBC.position(225, 200);
@@ -62,14 +61,14 @@ function buttons() {
   ballUpgrades[u] = upgradeSC;
   u++;
 
-  upgradeES = createButton();
-  upgradeES.mousePressed(moreESMC);
-  upgradeES.cost = 25;
-  upgradeES.html("Faster" + " ($" + upgradeES.cost + ")");
-  upgradeES.position(100, 275);
-  upgradeES.menu = 2;
-  upgradeES.style("border-width", "5px");
-  ballUpgrades[u] = upgradeES;
+  upgradeESB = createButton();
+  upgradeESB.mousePressed(moreESMC);
+  upgradeESB.cost = 25;
+  upgradeESB.html("Faster" + " ($" + upgradeESB.cost + ")");
+  upgradeESB.position(100, 275);
+  upgradeESB.menu = 2;
+  upgradeESB.style("border-width", "5px");
+  ballUpgrades[u] = upgradeESB;
   u++;
 
   upgradeEV = createButton();
@@ -87,13 +86,13 @@ function buttons() {
   upgradeDmg.cost = 100;
   upgradeDmg.html("More Damage" + " ($" + upgradeDmg.cost + ")");
   upgradeDmg.position(100, 375);
-  upgradeDmg.menu = 2;
+  upgradeDmg.menu = 3;
   upgradeDmg.style("border-width", "5px");
   ballUpgrades[u] = upgradeDmg;
   u++;
 
   upgradeSPC = createButton();
-  upgradeSPC.mousePressed(moreSpikeBalls);
+  upgradeSPC.mousePressed(moreSP);
   upgradeSPC.cost = 150;
   upgradeSPC.html("More Spikes" + " ($" + upgradeSPC.cost + ")");
   upgradeSPC.position(350, 275);
@@ -130,9 +129,10 @@ function buttons() {
 function hideButtons() {
   for (let i = 0; i < ballUpgrades.length; i++) {
     ballUpgrades[i].hide();
+    if (i < mainMenuButtons.length) {
+      mainMenuButtons[i].style("background-color", color(255, 248, 220));
+    }
   }
-  ballCountButton.style("background-color", color(255, 248, 220));
-  ballUpgradeButton.style("background-color", color(255, 248, 220));
 }
 
 function showButtons(menuNumber) {
@@ -144,9 +144,8 @@ function showButtons(menuNumber) {
       continue;
     }
   }
-  if (menuNumber == 2) {
-    ballCountButton.style("background-color", color(102, 102, 102));
-  } else if (menuNumber == 3) {
-    ballUpgradeButton.style("background-color", color(102, 102, 102));
-  }
+  mainMenuButtons[menuNumber - 2].style(
+    "background-color",
+    color(102, 102, 102)
+  );
 }
