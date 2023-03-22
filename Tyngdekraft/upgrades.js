@@ -1,48 +1,42 @@
 function moreE() {
-  if (money >= upgradeECount.cost) {
+  if (money >= upgradeEC.cost) {
     createBalls(n, "Earth");
     balls[n].img.hide();
     n++;
-    money -= upgradeECount.cost;
-    upgradeECount.cost = round(
-      upgradeECount.cost ** (1 + 3 / upgradeECount.cost)
-    );
-    upgradeECount.html("Earth" + " ($" + upgradeECount.cost + ")");
+    money -= upgradeEC.cost;
+    upgradeEC.cost = round(upgradeEC.cost ** (1 + 3 / upgradeEC.cost));
+    upgradeEC.html("Earth" + " ($" + upgradeEC.cost + ")");
   }
 }
 
 function moreB() {
-  if (money >= upgradeBCount.cost) {
+  if (money >= upgradeBC.cost) {
     createBalls(n, "Bomb");
     balls[n].img.hide();
     n++;
-    money -= upgradeBCount.cost;
-    upgradeBCount.cost = round(
-      upgradeBCount.cost ** (1 + 4 / upgradeBCount.cost)
-    );
-    upgradeBCount.html("Extra Bomb" + " ($" + upgradeBCount.cost + ")");
+    money -= upgradeBC.cost;
+    upgradeBC.cost = round(upgradeBC.cost ** (1 + 4 / upgradeBC.cost));
+    upgradeBC.html("Extra Bomb" + " ($" + upgradeBC.cost + ")");
   }
 }
 
 function moreS() {
-  if (money >= upgradeSCount.cost) {
+  if (money >= upgradeSC.cost) {
     createBalls(n, "Splitter");
     balls[n].img.hide();
     n++;
-    money -= upgradeSCount.cost;
-    upgradeSCount.cost = round(
-      upgradeSCount.cost ** (1 + 4 / upgradeSCount.cost)
-    );
-    upgradeSCount.html("Splitter Ball " + "($" + upgradeSCount.cost + ")");
+    money -= upgradeSC.cost;
+    upgradeSC.cost = round(upgradeSC.cost ** (1 + 4 / upgradeSC.cost));
+    upgradeSC.html("Splitter Ball " + "($" + upgradeSC.cost + ")");
   }
 }
 
 function moreESMC() {
-  if (money >= upgradeES.cost) {
+  if (money >= upgradeESB.cost) {
     upgradeES();
     money -= upgradeESp.cost;
-    upgradeES.cost = round(upgradeES.cost ** (1 + 3 / upgradeES.cost));
-    upgradeES.html("Faster" + " ($" + upgradeES.cost + ")");
+    upgradeESB.cost = round(upgradeESB.cost ** (1 + 3 / upgradeESB.cost));
+    upgradeESB.html("Faster" + " ($" + upgradeESB.cost + ")");
   }
 }
 function upgradeES() {
@@ -62,7 +56,7 @@ function moreDMC() {
     money -= upgradeDmg.cost;
     upgradeDmg.cost = round(upgradeDmg.cost ** (1 + 10 / upgradeDmg.cost));
     upgradeDmg.html("More Damage" + " ($" + upgradeDmg.cost + ")");
-    moreDamange();
+    moreDamage();
   }
 }
 

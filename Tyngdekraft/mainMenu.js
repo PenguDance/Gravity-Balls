@@ -5,16 +5,16 @@ function mainMenu() {
       balls[i].img.hide();
     }
     menu = 1;
-    ballCountButton.show();
-    ballUpgradeButton.show();
-    cookieButton.show();
+    for (let i = 0; i < mainMenuButtons.length; i++) {
+      mainMenuButtons[i].show();
+    }
   } else {
     BGM.volume(0.2);
     BGM.loop();
     hideButtons();
-    ballCountButton.hide();
-    ballUpgradeButton.hide();
-    cookieButton.hide();
+    for (let i = 0; i < mainMenuButtons.length; i++) {
+      mainMenuButtons[i].hide();
+    }
     for (let i = 0; i < n; i++) {
       balls[i].img.show();
     }
