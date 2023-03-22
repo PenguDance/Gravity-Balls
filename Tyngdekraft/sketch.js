@@ -28,7 +28,8 @@ let Bvalue = 2,
   ExDmg = 2,
   ExIMG,
   ExVisual = 60,
-  ExSize = ExRad * 2;
+  ExSize = ExRad * 2,
+  Blives = 3;
 let splitballs = [],
   Svalue = 2,
   Slives = 5,
