@@ -1,4 +1,4 @@
-function moreEarths() {
+function moreE() {
   if (money >= upgradeECount.cost) {
     createBalls(n, "Earth");
     balls[n].img.hide();
@@ -11,7 +11,7 @@ function moreEarths() {
   }
 }
 
-function moreBombs() {
+function moreB() {
   if (money >= upgradeBCount.cost) {
     createBalls(n, "Bomb");
     balls[n].img.hide();
@@ -24,7 +24,7 @@ function moreBombs() {
   }
 }
 
-function moreSplitters() {
+function moreS() {
   if (money >= upgradeSCount.cost) {
     createBalls(n, "Splitter");
     balls[n].img.hide();
@@ -37,43 +37,43 @@ function moreSplitters() {
   }
 }
 
-function moreESpeed() {
-  if (money >= upgradeESpeed.cost) {
-    vel = vel * 1.03;
-    money -= upgradeESpeed.cost;
-    upgradeESpeed.cost = round(
-      upgradeESpeed.cost ** (1 + 3 / upgradeESpeed.cost)
-    );
-    upgradeESpeed.html("Faster" + " ($" + upgradeESpeed.cost + ")");
+function moreESMC() {
+  if (money >= upgradeES.cost) {
+    upgradeES();
+    money -= upgradeESp.cost;
+    upgradeES.cost = round(upgradeES.cost ** (1 + 3 / upgradeES.cost));
+    upgradeES.html("Faster" + " ($" + upgradeES.cost + ")");
+  }
+}
+function upgradeES() {
+  Evel = Evel * 1.03;
+}
+function moreEVMC() {
+  if (money >= upgradeEV.cost) {
+    v++;
+    money -= upgradeEV.cost;
+    upgradeEV.cost = round(upgradeEV.cost ** (1 + 10 / upgradeEV.cost));
+    upgradeEV.html("More Value" + " ($" + upgradeEV.cost + ")");
   }
 }
 
-function moreEValue() {
-  if (money >= upgradeEValue.cost) {
-    value++;
-    money -= upgradeEValue.cost;
-    upgradeEValue.cost = round(
-      upgradeEValue.cost ** (1 + 10 / upgradeEValue.cost)
-    );
-    upgradeEValue.html("More Value" + " ($" + upgradeEValue.cost + ")");
+function moreDMC() {
+  if (money >= upgradeDmg.cost) {
+    money -= upgradeDmg.cost;
+    upgradeDmg.cost = round(upgradeDmg.cost ** (1 + 10 / upgradeDmg.cost));
+    upgradeDmg.html("More Damage" + " ($" + upgradeDmg.cost + ")");
+    moreDamange();
   }
 }
 
-function moreEDamage() {
-  if (money >= upgradeEDmg.cost) {
-    Dmg++;
-    money -= upgradeEDmg.cost;
-    upgradeEDmg.cost = round(upgradeEDmg.cost ** (1 + 10 / upgradeEDmg.cost));
-    upgradeEDmg.html("More Damage" + " ($" + upgradeEDmg.cost + ")");
-  }
+function moreDamage() {
+  Dmg++;
 }
 
-function moreSpikeBalls() {
-  if (money >= upgradeSPCount.cost) {
-    money -= upgradeSPCount.cost;
-    upgradeSPCount.cost = round(
-      upgradeSPCount.cost ** (1 + 10 / upgradeSPCount.cost)
-    );
-    upgradeSPCount.html("More Spikes" + " ($" + upgradeSPCount.cost + ")");
+function moreSP() {
+  if (money >= upgradeSPC.cost) {
+    money -= upgradeSPC.cost;
+    upgradeSPC.cost = round(upgradeSPC.cost ** (1 + 10 / upgradeSPC.cost));
+    upgradeSPC.html("More Spikes" + " ($" + upgradeSPC.cost + ")");
   }
 }

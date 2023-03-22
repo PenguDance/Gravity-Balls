@@ -8,7 +8,7 @@ let dx,
   B,
   n = 1,
   score = 0,
-  money = 100,
+  money = 100000,
   Elives = 1,
   Evalue = 1,
   gracePeriod = 30,
@@ -49,15 +49,20 @@ function setup() {
   mouseX = width / 2;
   mouseY = height / 2;
   noStroke();
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < nE; i++) {
     createBalls(i, "Earth");
+  }
+  for (let i = 0; i < nB; i++) {
+    createBalls(i, "Bomb");
+  }
+  for (let i = 0; i < nS; i++) {
+    createBalls(i, "Splitter");
   }
   buttons();
   mainMenu();
   ExIMG = createImg("Assets/explosion.png");
   ExIMG.size(ExRad * 2, ExRad * 2);
   ExIMG.hide();
-  setCookie();
 }
 
 function draw() {
