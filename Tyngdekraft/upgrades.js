@@ -67,7 +67,17 @@ function moreDamage() {
 function moreSP() {
   if (money >= upgradeSPC.cost) {
     money -= upgradeSPC.cost;
+    SPCount++;
     upgradeSPC.cost = round(upgradeSPC.cost ** (1 + 10 / upgradeSPC.cost));
     upgradeSPC.html("More Spikes" + " ($" + upgradeSPC.cost + ")");
+  }
+}
+
+function moreSPDmg() {
+  if (money >= upgradeSPDmg.cost) {
+    money -= upgradeSPDmg.cost;
+    SPDmg++;
+    upgradeSPDmg.cost = round(upgradeSPDmg.cost ** (1 + 10 / upgradeSPDmg.cost));
+    upgradeSPDmg.html("More Spikes" + " ($" + upgradeSPDmg.cost + ")");
   }
 }

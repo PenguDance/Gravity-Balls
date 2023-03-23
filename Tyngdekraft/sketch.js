@@ -35,8 +35,9 @@ let Bvalue = 2,
 let splitballs = [],
   Svalue = 2,
   Slives = 5,
-  SDmg = 1,
+  SPDmg = 1,
   SBounce = 0;
+SPCount = 1;
 let playing = true,
   test;
 let BGM, pointSound;
@@ -79,7 +80,9 @@ function draw() {
         if (balls[i].type === "Bomb") {
           explosion(i);
         } else if (balls[i].type === "Splitter") {
-          splitballs[splitballs.length] = new SplitBalls(i);
+          for (let sn = 0; sn < SPCount; sn++) {
+            splitballs[splitballs.length] = new SplitBalls(i);
+          }
         }
         balls[i].img.remove();
         pointSound.volume(0.1);
@@ -108,7 +111,7 @@ function draw() {
           if (distance <= (splitballs[i].dia + balls[I].dia) / 2) {
             splitballs[i].img.hide();
             splitballs[i] = null;
-            balls[I].dmg = SDmg;
+            balls[I].dmg = SPDmg;
             balls[I].hit = true;
             break;
           }

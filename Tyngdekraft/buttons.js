@@ -101,6 +101,16 @@ function buttons() {
   ballUpgrades[u] = upgradeSPC;
   u++;
 
+  upgradeSPDmg = createButton();
+  upgradeSPDmg.mousePressed(moreSPDmg);
+  upgradeSPDmg.cost = 150;
+  upgradeSPDmg.html("More Spikes" + " ($" + upgradeSPDmg.cost + ")");
+  upgradeSPDmg.position(350, 375);
+  upgradeSPDmg.menu = 2;
+  upgradeSPDmg.style("border-width", "5px");
+  ballUpgrades[u] = upgradeSPDmg;
+  u++;
+
   loadCookies = createButton();
   loadCookies.mousePressed(getCookie);
   loadCookies.cost = 0;
