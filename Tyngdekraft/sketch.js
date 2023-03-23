@@ -103,7 +103,7 @@ function draw() {
         for (let I = 0; I < n; I++) {
           let distance = sqrt(
             (splitballs[i].x - balls[I].x) ** 2 +
-              (splitballs[i].y - balls[I].y) ** 2
+            (splitballs[i].y - balls[I].y) ** 2
           );
           if (distance <= (splitballs[i].dia + balls[I].dia) / 2) {
             splitballs[i].img.hide();
@@ -175,7 +175,7 @@ function explosion(i) {
   ExIMG.position(balls[i].x - ExRad, balls[i].y - ExRad);
   ExIMG.time = frameCount;
   for (let t = 0; t < balls.length; t++) {
-    if (t == i) {
+    if (balls[t].type === 'Bomb') {
       continue;
     } else {
       if (
