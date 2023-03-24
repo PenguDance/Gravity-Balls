@@ -7,7 +7,7 @@ let dx,
   G,
   B,
   n = 1,
-  score = 0,
+  score = 49,
   money = 100000,
   Elives = 1,
   Evalue = 1,
@@ -15,6 +15,9 @@ let dx,
   u = 0,
   Dmg = 1,
   mass = 10;
+pPoints = 0;
+bSpawns = 0;
+boss = [];
 let dia = 30;
 (vel = 0.2),
   (acc = 600),
@@ -24,7 +27,8 @@ let dia = 30;
   (bU = 0),
   (menu = 0),
   (mainMenuButtons = []),
-  (earthUpgrades = []);
+  (speedUpgrades = []),
+  (morePlanetButtons = []);
 let Bvalue = 2,
   ExRad = 200,
   ExDmg = 2,
@@ -61,6 +65,7 @@ function setup() {
   for (let i = 0; i < nS; i++) {
     createBalls(i, "Splitter");
   }
+  playing = true;
   buttons();
   mainMenu();
   ExIMG = createImg("Assets/explosion.png");
@@ -73,9 +78,26 @@ function draw() {
   if (playing) {
     background(220);
     for (let i = 0; i < n; i++) {
-      balls[i].update(mouseX, mouseY, i);
+      if (boss[bSpawns] == null) {
+        balls[i].update(mouseX, mouseY, i, dia);
+      } else {
+        balls[i].update(boss[bSpawns].x, boss[bSpawns].y, i, boss[bSpawns].dia);
+      }
       if (balls[i].hit && balls[i].dmg >= balls[i].lives) {
         score += balls[i].value;
+        if (score >= 50 * 2 ** (bSpawns + 1) && boss[bSpawns] == null) {
+          boss[bSpawns] = new Boss();
+          print("Boss spawn");
+        }
+        if (boss[bSpawns] != null) {
+          boss[bSpawns].dmg += Dmg;
+          if (boss[bSpawns].dmg >= boss[bSpawns].lives) {
+            boss[bSpawns].img.hide();
+            boss[bSpawns].alive = false;
+            bSpawns++;
+            pPoints++;
+          }
+        }
         money += balls[i].value;
         if (balls[i].type === "Bomb") {
           explosion(i);
@@ -89,6 +111,9 @@ function draw() {
         pointSound.play();
         createBalls(i, balls[i].type);
       }
+    }
+    if (boss[bSpawns] != null && boss[bSpawns].alive == true) {
+      boss[bSpawns].update(mouseX, mouseY);
     }
     for (let i = 0; i < splitballs.length; i++) {
       if (splitballs[i] == null) {
@@ -106,7 +131,7 @@ function draw() {
         for (let I = 0; I < n; I++) {
           let distance = sqrt(
             (splitballs[i].x - balls[I].x) ** 2 +
-            (splitballs[i].y - balls[I].y) ** 2
+              (splitballs[i].y - balls[I].y) ** 2
           );
           if (distance <= (splitballs[i].dia + balls[I].dia) / 2) {
             splitballs[i].img.hide();
@@ -118,6 +143,21 @@ function draw() {
         }
       }
     }
+    if (boss[bSpawns] != null) {
+      fill(100, 0, 100);
+      rect(width / 6, 100, (2 * width) / 3, 40);
+      fill(170, 0, 170);
+      rect(
+        width / 6,
+        100,
+        ((((boss[bSpawns].lives - boss[bSpawns].dmg) / boss[bSpawns].lives) *
+          1) /
+          3) *
+          2 *
+          width,
+        40
+      );
+    }
   }
   noFill();
   circle(mouseX, mouseY, dia);
@@ -125,7 +165,14 @@ function draw() {
   textAlign(CENTER);
   textSize(20);
   text(
-    "points = " + score + "        " + "money = $" + money,
+    "points = " +
+      score +
+      "        " +
+      "money = $" +
+      money +
+      "        " +
+      "prestige = " +
+      pPoints,
     0,
     0,
     width,
@@ -163,8 +210,18 @@ function createBalls(i, type) {
   }
 }
 
-function angle(i) {
-  if (balls[i].dx > 0 && balls[i].dy < 0) {
+function angle(i, type) {
+  if (type === "Boss") {
+    if (boss[i].dx > 0 && boss[i].dy < 0) {
+      boss[i].A = -asin(boss[i].dy / boss[i].dist);
+    } else if (boss[i].dx > 0 && boss[i].dy > 0) {
+      boss[i].A = 2 * PI - asin(boss[i].dy / boss[i].dist);
+    } else if (boss[i].dx < 0 && boss[i].dy > 0) {
+      boss[i].A = PI + asin(boss[i].dy / boss[i].dist);
+    } else if (boss[i].dx < 0 && boss[i].dy < 0) {
+      boss[i].A = PI + asin(boss[i].dy / boss[i].dist);
+    }
+  } else if (balls[i].dx > 0 && balls[i].dy < 0) {
     balls[i].A = -asin(balls[i].dy / balls[i].dist);
   } else if (balls[i].dx > 0 && balls[i].dy > 0) {
     balls[i].A = 2 * PI - asin(balls[i].dy / balls[i].dist);
@@ -178,7 +235,7 @@ function explosion(i) {
   ExIMG.position(balls[i].x - ExRad, balls[i].y - ExRad);
   ExIMG.time = frameCount;
   for (let t = 0; t < balls.length; t++) {
-    if (balls[t].type === 'Bomb') {
+    if (balls[t].type === "Bomb") {
       continue;
     } else {
       if (
@@ -213,6 +270,47 @@ class SplitBalls {
     this.img.position(this.x, this.y);
   }
 }
+class Boss {
+  constructor() {
+    this.dia = 250;
+    this.x = random(this.dia, width - this.dia);
+    this.y = random(this.dia, height - this.dia);
+    this.vx = random(0, 2);
+    this.vy = random(0, 2);
+    this.value = 50 * bSpawns ** 2;
+    this.alive = true;
+    this.lives = 10 * 3 ** (bSpawns + 1);
+    this.dmg = 0;
+    this.type = "Boss";
+    this.img = createImg("Assets/boss.png");
+    this.img.size(this.dia, this.dia);
+    this.img.position(this.x - this.dia / 2, this.y - this.dia / 2);
+  }
+  update(x, y) {
+    this.dx = x - this.x;
+    this.dy = y - this.y;
+    this.dist = sqrt(this.dx ** 2 + this.dy ** 2);
+    angle(bSpawns, this.type);
+    this.a = (100 * acc) / (this.dist + dia / 2 + this.dia / 2) ** 2;
+    this.ax = cos(this.A) * this.a;
+    this.ay = -sin(this.A) * this.a;
+    this.vx = this.vx + this.ax * 0.03;
+    this.vy = this.vy + this.ay * 0.03;
+    if (this.dist <= this.dia / 2 + dia / 2) {
+      this.vx = -this.vx;
+      this.vy = -this.vy;
+    }
+    this.x = this.x + this.vx;
+    this.y = this.y + this.vy;
+    this.img.position(this.x - this.dia / 2, this.y - this.dia / 2);
+    if (this.x - this.dia / 2 <= 0 || this.x + this.dia / 2 >= width) {
+      this.vx = -this.vx;
+    }
+    if (this.y - this.dia / 2 <= 0 || this.y + this.dia / 2 >= height) {
+      this.vy = -this.vy;
+    }
+  }
+}
 class Planet {
   constructor(type) {
     this.dia = 50;
@@ -230,12 +328,12 @@ class Planet {
     this.img.size(this.dia, this.dia);
     this.img.position(this.x - this.dia / 2, this.y - this.dia / 2);
   }
-  update(x, y, i) {
+  update(x, y, i, dia) {
     this.dx = x - this.x;
     this.dy = y - this.y;
     this.dist = sqrt(this.dx ** 2 + this.dy ** 2);
     this.A = 0;
-    angle(i);
+    angle(i, this.type);
 
     if (this.grace + gracePeriod <= frameCount && this.type !== "Split") {
       this.a = (100 * acc) / (this.dist + dia / 2 + this.dia / 2) ** 2;

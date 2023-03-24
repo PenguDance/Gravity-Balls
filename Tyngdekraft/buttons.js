@@ -26,9 +26,43 @@ function buttons() {
     }
   }
 
-  // Earth upgrade buttons
-  for (let i = 0; i < 3; i++) {
-    earthUpgrades[i] = createButton();
+  for (let i = 0; i < 4; i++) {
+    // Creates extra planet buttons and their upgrades
+
+    // Planets
+    morePlanetButtons[i] = createButton();
+    morePlanetButtons[i].position(100 + 125 * i, 100);
+    morePlanetButtons[i].size(100, 50);
+    morePlanetButtons[i].cost = 25 * (i ^ 2);
+    morePlanetButtons[i].hide();
+    morePlanetButtons[i].style("background-color", color(255, 248, 220));
+    morePlanetButtons[i].style("border-width", "5px");
+    morePlanetButtons[i].menu = 2;
+
+    // Speed upgrades
+    speedUpgrades[i] = createButton();
+    speedUpgrades[i].position(100 + 125 * i, 275);
+    speedUpgrades[i].cost = 25 * (i ^ 2);
+    speedUpgrades[i].size(100, 50);
+    speedUpgrades[i].hide();
+    speedUpgrades[i].style("background-color", color(255, 248, 220));
+    speedUpgrades[i].style("border-width", "5px");
+    speedUpgrades[i].menu = 2;
+    speedUpgrades[i].html("Faster ($" + speedUpgrades[i].cost + ")");
+
+    if (i == 0) {
+      // Earth
+      speedUpgrades[i].mousePressed(moreESMC);
+    } else if (i == 1) {
+      // Bomb
+      speedUpgrades[i].mousePressed(moreESMC);
+    } else if (i == 2) {
+      // Splitter
+      speedUpgrades[i].mousePressed(moreESMC);
+    } else if (i == 4) {
+      // Spike
+      speedUpgrades[i].mousePressed(moreESMC);
+    }
   }
 
   upgradeEC = createButton();
@@ -61,16 +95,6 @@ function buttons() {
   ballUpgrades[u] = upgradeSC;
   u++;
 
-  upgradeESB = createButton();
-  upgradeESB.mousePressed(moreESMC);
-  upgradeESB.cost = 25;
-  upgradeESB.html("Faster" + " ($" + upgradeESB.cost + ")");
-  upgradeESB.position(100, 275);
-  upgradeESB.menu = 2;
-  upgradeESB.style("border-width", "5px");
-  ballUpgrades[u] = upgradeESB;
-  u++;
-
   upgradeEV = createButton();
   upgradeEV.mousePressed(moreEVMC);
   upgradeEV.cost = 500;
@@ -95,8 +119,9 @@ function buttons() {
   upgradeSPC.mousePressed(moreSP);
   upgradeSPC.cost = 150;
   upgradeSPC.html("More Spikes" + " ($" + upgradeSPC.cost + ")");
-  upgradeSPC.position(350, 275);
+  upgradeSPC.position(475, 200);
   upgradeSPC.menu = 2;
+  upgradeSPC.shown = false;
   upgradeSPC.style("border-width", "5px");
   ballUpgrades[u] = upgradeSPC;
   u++;
@@ -104,17 +129,17 @@ function buttons() {
   upgradeSPDmg = createButton();
   upgradeSPDmg.mousePressed(moreSPDmg);
   upgradeSPDmg.cost = 150;
-  upgradeSPDmg.html("More Spikes" + " ($" + upgradeSPDmg.cost + ")");
-  upgradeSPDmg.position(350, 375);
+  upgradeSPDmg.html("More Spike damage" + " ($" + upgradeSPDmg.cost + ")");
+  upgradeSPDmg.position(475, 325);
   upgradeSPDmg.menu = 2;
+  upgradeSPDmg.shown = false;
   upgradeSPDmg.style("border-width", "5px");
   ballUpgrades[u] = upgradeSPDmg;
   u++;
 
   loadCookies = createButton();
   loadCookies.mousePressed(getCookie);
-  loadCookies.cost = 0;
-  loadCookies.html("loadCookies" + " ($" + loadCookies.cost + ")");
+  loadCookies.html("Load cookies");
   loadCookies.position(450, 275);
   loadCookies.menu = 4;
   ballUpgrades[u] = loadCookies;
@@ -122,11 +147,18 @@ function buttons() {
 
   setCookies = createButton();
   setCookies.mousePressed(setCookie);
-  setCookies.cost = 0;
-  setCookies.html("setCookies" + " ($" + setCookies.cost + ")");
+  setCookies.html("Set cookies");
   setCookies.position(550, 275);
   setCookies.menu = 4;
   ballUpgrades[u] = setCookies;
+  u++;
+
+  clearCookiesButton = createButton();
+  clearCookiesButton.mousePressed(clearCookies);
+  clearCookiesButton.html("Clear cookies");
+  clearCookiesButton.position(650, 275);
+  clearCookiesButton.menu = 4;
+  ballUpgrades[u] = clearCookiesButton;
   u++;
 
   for (let i = 0; i < ballUpgrades.length; i++) {
@@ -142,11 +174,20 @@ function hideButtons() {
     if (i < mainMenuButtons.length) {
       mainMenuButtons[i].style("background-color", color(255, 248, 220));
     }
+    if (i < speedUpgrades.length) {
+      speedUpgrades[i].hide();
+    }
   }
 }
 
 function showButtons(menuNumber) {
   hideButtons();
+
+  if (menuNumber == 2) {
+    for (let i = 0; i < speedUpgrades.length; i++) {
+      speedUpgrades[i].show();
+    }
+  }
   for (let i = 0; i < ballUpgrades.length; i++) {
     if (ballUpgrades[i].menu == menuNumber) {
       ballUpgrades[i].show();
