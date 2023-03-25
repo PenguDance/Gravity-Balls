@@ -19,8 +19,8 @@ pPoints = 0;
 bSpawns = 0;
 boss = [];
 let dia = 30;
-(vel = 0.2),
-  (acc = 600),
+(vel = 0.2), (Evel = 0.2), (Bvel = 0.2), (Svel = 0.2), (SPlives = 1);
+(acc = 600),
   (upgrades = []),
   (balls = []),
   (ballUpgrades = []),
@@ -102,6 +102,7 @@ function draw() {
         if (balls[i].type === "Bomb") {
           explosion(i);
         } else if (balls[i].type === "Splitter") {
+          print("Din mor");
           for (let sn = 0; sn < SPCount; sn++) {
             splitballs[splitballs.length] = new SplitBalls(i);
           }
@@ -250,7 +251,7 @@ function explosion(i) {
 }
 
 class SplitBalls {
-  constructor(i) {
+  constructor(i, lives) {
     this.x = balls[i].x;
     this.y = balls[i].y;
     this.type = "Split";
@@ -258,7 +259,7 @@ class SplitBalls {
     this.img = createImg("Assets/split.png");
     this.img.size(this.dia, this.dia);
     this.img.position(this.x, this.y);
-    this.lives = 1;
+    this.lives = lives;
     this.v = sqrt(balls[i].vx ** 2 + balls[i].vy ** 2);
     this.A = random(2 * PI);
     this.vx = this.v * cos(this.A);
@@ -327,6 +328,7 @@ class Planet {
     this.img = createImg("Assets/" + type + ".png");
     this.img.size(this.dia, this.dia);
     this.img.position(this.x - this.dia / 2, this.y - this.dia / 2);
+    this.vel = vel;
   }
   update(x, y, i, dia) {
     this.dx = x - this.x;
@@ -334,13 +336,19 @@ class Planet {
     this.dist = sqrt(this.dx ** 2 + this.dy ** 2);
     this.A = 0;
     angle(i, this.type);
-
     if (this.grace + gracePeriod <= frameCount && this.type !== "Split") {
       this.a = (100 * acc) / (this.dist + dia / 2 + this.dia / 2) ** 2;
       this.ax = cos(this.A) * this.a;
       this.ay = -sin(this.A) * this.a;
-      this.vx = this.vx + this.ax * vel;
-      this.vy = this.vy + this.ay * vel;
+      if (this.type === "Earth") {
+        this.vel = Evel;
+      } else if (this.type === "Bomb") {
+        this.vel = Bvel;
+      } else if (this.type === "Splitter") {
+        this.vel = Svel;
+      }
+      this.vx = this.vx + this.ax * this.vel;
+      this.vy = this.vy + this.ay * this.vel;
       if (this.dist <= this.dia / 2 + dia / 2) {
         this.dmg += Dmg;
         this.hit = true;

@@ -31,9 +31,9 @@ function buttons() {
 
     // Planets
     morePlanetButtons[i] = createButton();
-    morePlanetButtons[i].position(100 + 125 * i, 100);
+    morePlanetButtons[i].position(100 + 125 * i, 175);
     morePlanetButtons[i].size(100, 50);
-    morePlanetButtons[i].cost = 25 * (i ^ 2);
+    morePlanetButtons[i].cost = 25 + 25 * i ** (i + 1);
     morePlanetButtons[i].hide();
     morePlanetButtons[i].style("background-color", color(255, 248, 220));
     morePlanetButtons[i].style("border-width", "5px");
@@ -41,8 +41,8 @@ function buttons() {
 
     // Speed upgrades
     speedUpgrades[i] = createButton();
-    speedUpgrades[i].position(100 + 125 * i, 275);
-    speedUpgrades[i].cost = 25 * (i ^ 2);
+    speedUpgrades[i].position(100 + 125 * i, 250);
+    speedUpgrades[i].cost = 25 + 25 * i ** (i + 1);
     speedUpgrades[i].size(100, 50);
     speedUpgrades[i].hide();
     speedUpgrades[i].style("background-color", color(255, 248, 220));
@@ -52,48 +52,34 @@ function buttons() {
 
     if (i == 0) {
       // Earth
+      morePlanetButtons[i].mousePressed(moreE);
+      morePlanetButtons[i].html(
+        "Extra earth" + " ($" + morePlanetButtons[i].cost + ")"
+      );
       speedUpgrades[i].mousePressed(moreESMC);
     } else if (i == 1) {
       // Bomb
-      speedUpgrades[i].mousePressed(moreESMC);
+      morePlanetButtons[i].mousePressed(moreB);
+      morePlanetButtons[i].html(
+        "Bomb ball ($" + morePlanetButtons[i].cost + ")"
+      );
+      speedUpgrades[i].mousePressed(moreBSMC);
     } else if (i == 2) {
       // Splitter
-      speedUpgrades[i].mousePressed(moreESMC);
-    } else if (i == 4) {
+      morePlanetButtons[i].mousePressed(moreS);
+      morePlanetButtons[i].html(
+        "Splitter ball ($" + morePlanetButtons[i].cost + ")"
+      );
+      speedUpgrades[i].mousePressed(moreSSMC);
+    } else if (i == 3) {
       // Spike
-      speedUpgrades[i].mousePressed(moreESMC);
+      morePlanetButtons[i].mousePressed(moreSP);
+      morePlanetButtons[i].html(
+        "More spikes ($" + morePlanetButtons[i].cost + ")"
+      );
+      speedUpgrades[i].html("More lives ($" + speedUpgrades[i].cost + ")");
     }
   }
-
-  upgradeEC = createButton();
-  upgradeEC.mousePressed(moreE);
-  upgradeEC.cost = 25;
-  upgradeEC.html("Earth" + " ($" + upgradeEC.cost + ")");
-  upgradeEC.position(100, 200);
-  upgradeEC.menu = 2;
-  upgradeEC.style("border-width", "5px");
-  ballUpgrades[u] = upgradeEC;
-  u++;
-
-  upgradeBC = createButton(); // upgradeBC = Upgrade Bomb Count
-  upgradeBC.mousePressed(moreB);
-  upgradeBC.cost = 100;
-  upgradeBC.html("Bomb ball" + " ($" + upgradeBC.cost + ")");
-  upgradeBC.position(225, 200);
-  upgradeBC.menu = 2;
-  upgradeBC.style("border-width", "5px");
-  ballUpgrades[u] = upgradeBC;
-  u++;
-
-  upgradeSC = createButton();
-  upgradeSC.mousePressed(moreS);
-  upgradeSC.cost = 100;
-  upgradeSC.html("Splitter Ball " + "($" + upgradeSC.cost + ")");
-  upgradeSC.position(350, 200);
-  upgradeSC.menu = 2;
-  upgradeSC.style("border-width", "5px");
-  ballUpgrades[u] = upgradeSC;
-  u++;
 
   upgradeEV = createButton();
   upgradeEV.mousePressed(moreEVMC);
@@ -113,17 +99,6 @@ function buttons() {
   upgradeDmg.menu = 3;
   upgradeDmg.style("border-width", "5px");
   ballUpgrades[u] = upgradeDmg;
-  u++;
-
-  upgradeSPC = createButton();
-  upgradeSPC.mousePressed(moreSP);
-  upgradeSPC.cost = 150;
-  upgradeSPC.html("More Spikes" + " ($" + upgradeSPC.cost + ")");
-  upgradeSPC.position(475, 200);
-  upgradeSPC.menu = 2;
-  upgradeSPC.shown = false;
-  upgradeSPC.style("border-width", "5px");
-  ballUpgrades[u] = upgradeSPC;
   u++;
 
   upgradeSPDmg = createButton();
@@ -174,9 +149,10 @@ function hideButtons() {
     if (i < mainMenuButtons.length) {
       mainMenuButtons[i].style("background-color", color(255, 248, 220));
     }
-    if (i < speedUpgrades.length) {
-      speedUpgrades[i].hide();
-    }
+  }
+  for (let i = 0; i < morePlanetButtons.length; i++) {
+    morePlanetButtons[i].hide();
+    speedUpgrades[i].hide();
   }
 }
 
@@ -184,8 +160,9 @@ function showButtons(menuNumber) {
   hideButtons();
 
   if (menuNumber == 2) {
-    for (let i = 0; i < speedUpgrades.length; i++) {
+    for (let i = 0; i < morePlanetButtons.length; i++) {
       speedUpgrades[i].show();
+      morePlanetButtons[i].show();
     }
   }
   for (let i = 0; i < ballUpgrades.length; i++) {
