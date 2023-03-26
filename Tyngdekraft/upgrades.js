@@ -1,149 +1,95 @@
-function moreE() {
-  if (money >= morePlanetButtons[0].cost) {
-    createBalls(n, "Earth");
-    balls[n].img.hide();
-    n++;
-    money -= morePlanetButtons[0].cost;
-    morePlanetButtons[0].cost = round(
-      morePlanetButtons[0].cost ** (1 + 3 / morePlanetButtons[0].cost)
-    );
-    morePlanetButtons[0].html(
-      "Extra earth" + " ($" + morePlanetButtons[0].cost + ")"
-    );
+function morePlanetsMoneyCheck(i) {
+  if (money >= morePlanetButtons[i].cost) {
+    money -= morePlanetButtons[i].cost;
+    if (i != 3) {
+      nP[i]++;
+    }
+    morePlanets(i);
   }
 }
-
-function moreB() {
-  if (money >= morePlanetButtons[1].cost) {
-    createBalls(n, "Bomb");
-    balls[n].img.hide();
-    n++;
-    money -= morePlanetButtons[1].cost;
-    morePlanetButtons[1].cost = round(
-      morePlanetButtons[1].cost ** (1 + 4 / morePlanetButtons[1].cost)
-    );
-    morePlanetButtons[1].html(
-      "Extra Bomb" + " ($" + morePlanetButtons[1].cost + ")"
-    );
-  }
-}
-
-function moreS() {
-  if (money >= morePlanetButtons[2].cost) {
-    createBalls(n, "Splitter");
-    balls[n].img.hide();
-    n++;
-    money -= morePlanetButtons[2].cost;
-    morePlanetButtons[2].cost = round(
-      morePlanetButtons[2].cost ** (1 + 4 / morePlanetButtons[2].cost)
-    );
-    morePlanetButtons[2].html(
-      "Splitter Ball " + "($" + morePlanetButtons[2].cost + ")"
-    );
-  }
-}
-
-function moreSP() {
-  if (money >= morePlanetButtons[3].cost) {
-    money -= morePlanetButtons[3].cost;
+function morePlanets(i) {
+  if (i == 3) {
     SPCount++;
-    morePlanetButtons[3].cost = round(
-      morePlanetButtons[3].cost ** (1 + 10 / morePlanetButtons[3].cost)
+  } else {
+    createBalls(n, morePlanetButtons[i].type);
+    balls[n].img.hide();
+    n++;
+  }
+  morePlanetButtons[i].cost = round(
+    morePlanetButtons[i].cost **
+      (1 + morePlanetButtons[i].upgradeCost / morePlanetButtons[i].cost)
+  );
+  morePlanetButtons[i].html(
+    morePlanetButtons[i].type + " ($" + morePlanetButtons[i].cost + ")"
+  );
+}
+
+function moreSpeedMoneyCheck(i) {
+  if (money >= speedUpgrades[i].cost) {
+    money -= speedUpgrades[i].cost;
+    if (i != 3) {
+      nSU[i]++;
+    }
+    moreSpeed(i);
+  }
+}
+function moreSpeed(i) {
+  if (i == 3) {
+    moreSPLMC();
+  } else {
+    vel[i] = vel[i] * 1.03;
+    speedUpgrades[i].cost = round(
+      speedUpgrades[i].cost ** (1 + 3 / speedUpgrades[i].cost)
     );
-    morePlanetButtons[3].html(
-      "More spikes" + " ($" + morePlanetButtons[3].cost + ")"
-    );
+    speedUpgrades[i].html("Faster ($" + speedUpgrades[i].cost + ")");
+  }
+}
+function moreValueMoneyCheck(i) {
+  if (money >= valueUpgrades[i].cost) {
+    money -= valueUpgrades[i].cost;
+    if (i != 3) {
+      nVU[i]++;
+    }
+    moreValue(i);
   }
 }
 
-function moreESMC() {
-  if (money >= speedUpgrades[0].cost) {
-    upgradeES();
-    money -= speedUpgrades[0].cost;
-    speedUpgrades[0].cost = round(
-      speedUpgrades[0].cost ** (1 + 3 / speedUpgrades[0].cost)
+function moreValue(i) {
+  if (i == 3) {
+    moreSPDmg();
+  } else {
+    value[i]++;
+    valueUpgrades[i].cost = round(
+      valueUpgrades[i].cost ** (1 + 10 / valueUpgrades[i].cost)
     );
-    speedUpgrades[0].html("Faster" + " ($" + speedUpgrades[0].cost + ")");
-  }
-}
-function upgradeES() {
-  Evel = Evel * 1.03;
-}
-
-function moreBSMC() {
-  if (money >= speedUpgrades[1].cost) {
-    upgradeBS();
-    money -= speedUpgrades[1].cost;
-    speedUpgrades[1].cost = round(
-      speedUpgrades[1].cost ** (1 + 3 / speedUpgrades[1].cost)
-    );
-    speedUpgrades[1].html("Faster" + " ($" + speedUpgrades[1].cost + ")");
-  }
-}
-function upgradeBS() {
-  Bvel = Bvel * 1.03;
-}
-
-function moreSSMC() {
-  if (money >= speedUpgrades[2].cost) {
-    upgradeSS();
-    money -= speedUpgrades[2].cost;
-    speedUpgrades[2].cost = round(
-      speedUpgrades[2].cost ** (1 + 3 / speedUpgrades[2].cost)
-    );
-    speedUpgrades[2].html("Faster" + " ($" + speedUpgrades[2].cost + ")");
+    valueUpgrades[i].html("More Value ($" + valueUpgrades[i].cost + ")");
   }
 }
 
-function upgradeSS() {
-  Svel = Svel * 1.03;
-}
-
-function moreSPLMC() {
-  // More SPike Speed Money Check
-  if (money >= speedUpgrades[3].cost) {
-    upgradeSPS();
-    money -= speedUpgrades[3].cost;
-    speedUpgrades[3].cost = round(
-      speedUpgrades[3].cost ** (1 + 3 / speedUpgrades[3].cost)
-    );
-    speedUpgrades[3].html("More Lives" + " ($" + speedUpgrades[3].cost + ")");
-  }
-}
-
-function upgradeSPL() {
-  SPlives++;
-}
-
-function moreEVMC() {
-  if (money >= upgradeEV.cost) {
-    v++;
-    money -= upgradeEV.cost;
-    upgradeEV.cost = round(upgradeEV.cost ** (1 + 10 / upgradeEV.cost));
-    upgradeEV.html("More Value" + " ($" + upgradeEV.cost + ")");
-  }
-}
-
-function moreDMC() {
+function moreDMG() {
   if (money >= upgradeDmg.cost) {
     money -= upgradeDmg.cost;
     upgradeDmg.cost = round(upgradeDmg.cost ** (1 + 10 / upgradeDmg.cost));
     upgradeDmg.html("More Damage" + " ($" + upgradeDmg.cost + ")");
-    moreDamage();
+    Dmg++;
   }
-}
-
-function moreDamage() {
-  Dmg++;
 }
 
 function moreSPDmg() {
-  if (money >= upgradeSPDmg.cost) {
-    money -= upgradeSPDmg.cost;
-    SPDmg++;
-    upgradeSPDmg.cost = round(
-      upgradeSPDmg.cost ** (1 + 10 / upgradeSPDmg.cost)
-    );
-    upgradeSPDmg.html("More Spikes" + " ($" + upgradeSPDmg.cost + ")");
-  }
+  SPDmg++;
+  valueUpgrades[3].cost = round(
+    valueUpgrades[3].cost ** (1 + 10 / valueUpgrades[3].cost)
+  );
+  valueUpgrades[3].html(
+    "More Spike Damage" + " ($" + valueUpgrades[3].cost + ")"
+  );
+}
+
+function moreSPLMC() {
+  // More SPike Lives Money Check
+  SPlives++;
+  speedUpgrades[3].cost = round(
+    speedUpgrades[3].cost ** (1 + 3 / speedUpgrades[3].cost)
+  );
+  speedUpgrades[3].html("More lives" + " ($" + speedUpgrades[3].cost + ")");
 }

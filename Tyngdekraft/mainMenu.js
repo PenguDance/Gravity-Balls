@@ -7,7 +7,8 @@ function mainMenu() {
     for (let i = 0; i < n; i++) {
       balls[i].img.hide();
     }
-    menu = 1;
+    menu = 0;
+    showButtons(menu);
     for (let i = 0; i < mainMenuButtons.length; i++) {
       mainMenuButtons[i].show();
     }
@@ -25,6 +26,6 @@ function mainMenu() {
       boss[bSpawns].img.show();
     }
     playing = true;
-    menu = 0;
+    menu = 10;
   }
 }

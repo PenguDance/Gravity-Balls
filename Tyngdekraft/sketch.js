@@ -9,35 +9,34 @@ let dx,
   n = 1,
   score = 49,
   money = 100000,
-  Elives = 1,
-  Evalue = 1,
-  gracePeriod = 30,
-  u = 0,
-  Dmg = 1,
-  mass = 10;
+  value = [1, 2, 3];
+(Elives = 1), (gracePeriod = 30), (u = 0), (Dmg = 1), (mass = 10);
 pPoints = 0;
 bSpawns = 0;
 boss = [];
 let dia = 30;
-(vel = 0.2), (Evel = 0.2), (Bvel = 0.2), (Svel = 0.2), (SPlives = 1);
+(vel = [0.2, 0.2, 0.2]), (SPlives = 1);
 (acc = 600),
   (upgrades = []),
   (balls = []),
   (ballUpgrades = []),
+  (cookieButtons = []),
   (bU = 0),
   (menu = 0),
   (mainMenuButtons = []),
   (speedUpgrades = []),
-  (morePlanetButtons = []);
-let Bvalue = 2,
-  ExRad = 200,
+  (morePlanetButtons = []),
+  (valueUpgrades = []),
+  (nSU = [0, 0, 0]),
+  (nVU = [0, 0, 0]),
+  (nP = [1, 0, 0]);
+let ExRad = 200,
   ExDmg = 2,
   ExIMG,
   ExVisual = 60,
   ExSize = ExRad * 2,
   Blives = 3;
 let splitballs = [],
-  Svalue = 2,
   Slives = 5,
   SPDmg = 1,
   SBounce = 0;
@@ -102,7 +101,6 @@ function draw() {
         if (balls[i].type === "Bomb") {
           explosion(i);
         } else if (balls[i].type === "Splitter") {
-          print("Din mor");
           for (let sn = 0; sn < SPCount; sn++) {
             splitballs[splitballs.length] = new SplitBalls(i);
           }
@@ -195,17 +193,17 @@ function keyPressed() {
 function createBalls(i, type) {
   if (type === "Earth") {
     balls[i] = new Planet("earth");
-    balls[i].value = Evalue;
+    balls[i].value = value[0];
     balls[i].lives = Elives;
     balls[i].type = type;
   } else if (type === "Bomb") {
     balls[i] = new Planet("bomb");
-    balls[i].value = Bvalue;
+    balls[i].value = value[1];
     balls[i].lives = Blives;
     balls[i].type = type;
   } else if (type === "Splitter") {
     balls[i] = new Planet("splitter");
-    balls[i].value = Svalue;
+    balls[i].value = value[2];
     balls[i].lives = Slives;
     balls[i].type = type;
   }
@@ -328,7 +326,7 @@ class Planet {
     this.img = createImg("Assets/" + type + ".png");
     this.img.size(this.dia, this.dia);
     this.img.position(this.x - this.dia / 2, this.y - this.dia / 2);
-    this.vel = vel;
+    this.vel = null;
   }
   update(x, y, i, dia) {
     this.dx = x - this.x;
@@ -341,11 +339,11 @@ class Planet {
       this.ax = cos(this.A) * this.a;
       this.ay = -sin(this.A) * this.a;
       if (this.type === "Earth") {
-        this.vel = Evel;
+        this.vel = vel[0];
       } else if (this.type === "Bomb") {
-        this.vel = Bvel;
+        this.vel = vel[1];
       } else if (this.type === "Splitter") {
-        this.vel = Svel;
+        this.vel = vel[2];
       }
       this.vx = this.vx + this.ax * this.vel;
       this.vy = this.vy + this.ay * this.vel;
