@@ -7,13 +7,19 @@ let dx,
   G,
   B,
   n = 1,
-  score = 49,
-  money = 100000,
-  value = [1, 2, 3];
-(Elives = 1), (gracePeriod = 30), (u = 0), (Dmg = 1), (mass = 10);
-pPoints = 0;
-bSpawns = 0;
-boss = [];
+  score = 0,
+  money = 0,
+  value = [1, 2, 3],
+  Elives = 1,
+  gracePeriod = 30,
+  u = 0,
+  Dmg = 1,
+  income = 1,
+  mass = 10,
+  pPoints = 0,
+  pPointsAvailable = 0,
+  bSpawns = 0,
+  boss = [];
 let dia = 30;
 (vel = [0.2, 0.2, 0.2]), (SPlives = 1);
 (acc = 600),
@@ -52,6 +58,7 @@ function preload() {
 function setup() {
   frameRate(60);
   createCanvas((windowWidth * 8) / 10, (windowHeight * 8) / 10);
+
   mouseX = width / 2;
   mouseY = height / 2;
   noStroke();
@@ -70,9 +77,15 @@ function setup() {
   ExIMG = createImg("Assets/explosion.png");
   ExIMG.size(ExRad * 2, ExRad * 2);
   ExIMG.hide();
+  if (getItem("Earths") != null) {
+    getCookie();
+  }
 }
 
 function draw() {
+  if (frameCount % 10 == 0) {
+    setCookie();
+  }
   background(255, 248, 220);
   if (playing) {
     background(220);
@@ -94,7 +107,11 @@ function draw() {
             boss[bSpawns].img.hide();
             boss[bSpawns].alive = false;
             bSpawns++;
-            pPoints++;
+            pPointsAvailable++;
+            resetProgress.html(
+              "Reset progress for " + pPointsAvailable + " prestige points"
+            );
+            setCookie();
           }
         }
         money += balls[i].value;

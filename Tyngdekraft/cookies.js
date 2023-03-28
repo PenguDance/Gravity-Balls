@@ -17,7 +17,7 @@ function setCookie() {
   storeItem("Bombs", [nP[1], nSU[1], nVU[1], ExDmg, ExRad]);
   storeItem("Splitter", [nP[2], nSU[2], nVU[2]]);
   storeItem("Spike", [SPCount, SPlives, SPDmg]);
-  storeItem("Stats", [Dmg, score, money]);
+  storeItem("Stats", [Dmg, score, money, income, pPoints, pPointsAvailable]);
 }
 
 function clearCookies() {
@@ -31,8 +31,10 @@ function clearCookies() {
 function getCookie() {
   (Dmg = getItem("Stats")[0]),
     (score = getItem("Stats")[1]),
-    (money = getItem("Stats")[2]);
+    (money = getItem("Stats")[2]),
+    (income = getItem("Stats")[23]);
   (ExDmg = getItem("Bombs")[3]), (ExRad = getItem("Bombs")[4]);
+  pPointsAvailable = getItem("Stats")[5];
 
   cookieRestorePlanets();
   cookieRestoreSpeedUpgrade();
@@ -82,7 +84,7 @@ function cookieRestoreValueUpgrade() {
       count = nVU[i];
     }
     for (let j = 0; j < count; j++) {
-      moreValue();
+      moreValue(i);
     }
   }
 }

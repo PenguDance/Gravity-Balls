@@ -75,6 +75,22 @@ function moreDMG() {
   }
 }
 
+function dmgMultiplier() {
+  if (pPoints >= upgradeDmgM.cost) {
+    pPoints -= upgradeDmgM.cost;
+    upgradeDmgM.cost = round(upgradeDmgM.cost ** 2);
+    dmgM = dmgM ** 1.5;
+  }
+}
+
+function incomeMultiplier() {
+  if (pPoints >= upgradeIncome.cost) {
+    pPoints -= upgradeIncome.cost;
+    upgradeIncome.cost = round(upgradeIncome.cost ** 2);
+    income = income ** 1.2;
+  }
+}
+
 function moreSPDmg() {
   SPDmg++;
   valueUpgrades[3].cost = round(
