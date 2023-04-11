@@ -21,33 +21,40 @@ function setCookie() {
 }
 
 function clearCookies() {
-  let allCookies = Object.keys(localStorage);
-  for (let i = 0; i < allCookies.length; i++) {
-    let cookie = allCookies[i].toString();
-    removeItem(cookie);
-  }
+  nP = [1, 0, 0];
+  n = 1;
+  balls = [balls[0]];
+  nSU = [0, 0, 0];
+  nVU = [0, 0, 0];
+  storeItem("Earths", [nP[0], 0, 0]);
+  storeItem("Bombs", [nP[1], 0, 0, ExDmg, ExRad]);
+  storeItem("Splitter", [nP[2], 0, 0]);
+  storeItem("Spike", [1, 1, 1]);
+  storeItem("Stats", [1, 0, 0, 1, 0, 0]);
+  getCookie();
 }
 
 function getCookie() {
   (Dmg = getItem("Stats")[0]),
     (score = getItem("Stats")[1]),
     (money = getItem("Stats")[2]),
-    (income = getItem("Stats")[23]);
+    (income = getItem("Stats")[3]);
   (ExDmg = getItem("Bombs")[3]), (ExRad = getItem("Bombs")[4]);
   pPointsAvailable = getItem("Stats")[5];
-
   cookieRestorePlanets();
   cookieRestoreSpeedUpgrade();
   cookieRestoreValueUpgrade();
 }
 
 function cookieRestorePlanets() {
-  (nP = [getItem("Earths")[0], getItem("Bombs")[0], getItem("Splitter")[0]]),
-    (SPCount = getItem("Spike")[0]);
+  nP = [getItem("Earths")[0], getItem("Bombs")[0], getItem("Splitter")[0]];
+  SPCount = getItem("Spike")[0];
+  n = 0;
   for (let i = 0; i < 4; i++) {
+    morePlanetButtons[i].cost = 25 + 25 * i ** (i + 1);
     let count;
     if (i == 3) {
-      count = SPCount;
+      continue;
     } else {
       count = nP[i];
     }
