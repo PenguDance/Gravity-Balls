@@ -49,7 +49,10 @@ let splitballs = [],
 SPCount = 1;
 let playing = true,
   test;
-let BGM, pointSound;
+let BGM,
+  pointSound,
+  NEMT = -61, // NEMT = not enough money time
+  NEMTTime = 50;
 function preload() {
   BGM = createAudio("Assets/BGM2.mp3");
   pointSound = createAudio("Assets/point.wav");
@@ -78,7 +81,7 @@ function setup() {
   ExIMG.size(ExRad * 2, ExRad * 2);
   ExIMG.hide();
   if (getItem("Earths") != null) {
-    getCookie();
+    //getCookie();
   }
 }
 
@@ -86,7 +89,7 @@ function draw() {
   if (frameCount % 10 == 0) {
     setCookie();
   }
-  background(255, 248, 220);
+  background(224, 218, 193);
   if (playing) {
     background(220);
     for (let i = 0; i < n; i++) {
@@ -199,6 +202,11 @@ function draw() {
   } else if (ExIMG.time + ExVisual > frameCount) {
     tint(255, 4 * (ExIMG.time + ExVisual - frameCount));
     image(test, ExIMG.x, ExIMG.y, ExSize);
+  }
+  if (NEMT + NEMTTime >= frameCount) {
+    textAlign(CENTER);
+    textSize(100);
+    text("Not enough money", width / 2, height / 2 + 200);
   }
 }
 function keyPressed() {

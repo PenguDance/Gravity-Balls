@@ -19,25 +19,15 @@ function buttons() {
       });
 
       cookieButtons[i] = createButton();
-      cookieButtons[i].position(100 + 100 * i, 200);
-      cookieButtons[i].size(100, 50);
+      cookieButtons[i].position(width / 2 - 350 + 250 * i, 200);
+      cookieButtons[i].size(200, 300);
       cookieButtons[i].style("background-color", color(255, 248, 220));
       cookieButtons[i].style("border-width", "5px");
+      cookieButtons[i].style("font-size", "30px");
       cookieButtons[i].hide();
       cookieButtons[i].mousePressed(function () {
         cookieFunctions(i);
       });
-
-      if (i == 0) {
-        mainMenuButtons[i].html("Balls");
-        cookieButtons[i].html("Load Cookies");
-      } else if (i == 1) {
-        mainMenuButtons[i].html("Prestige");
-        cookieButtons[i].html("Set Cookies");
-      } else if (i == 2) {
-        mainMenuButtons[i].html("Cookies");
-        cookieButtons[i].html("Clear Cookies");
-      }
     }
 
     morePlanetButtons[i] = createButton();
@@ -90,12 +80,18 @@ function buttons() {
     if (i == 0) {
       morePlanetButtons[i].type = "Earth";
       morePlanetButtons[i].upgradeCost = 3;
+      mainMenuButtons[i].html("Balls");
+      cookieButtons[i].html("Load Cookies");
     } else if (i == 1) {
       morePlanetButtons[i].type = "Bomb";
       morePlanetButtons[i].upgradeCost = 4;
+      mainMenuButtons[i].html("Prestige");
+      cookieButtons[i].html("Set Cookies");
     } else if (i == 2) {
       morePlanetButtons[i].type = "Splitter";
       morePlanetButtons[i].upgradeCost = 4;
+      mainMenuButtons[i].html("Cookies");
+      cookieButtons[i].html("Clear Cookies");
     } else if (i == 3) {
       morePlanetButtons[i].type = "Spike";
       morePlanetButtons[i].upgradeCost = 10;
@@ -115,13 +111,14 @@ function buttons() {
 
   upgradeDmg = createButton();
   upgradeDmg.mousePressed(moreDMG);
-  upgradeDmg.cost = 100;
-  upgradeDmg.html("More Damage" + " ($" + upgradeDmg.cost + ")");
-  upgradeDmg.position(100, 375);
+  upgradeDmg.cost = 2;
+  upgradeDmg.html("More Damage" + "(" + "\u20BD" + upgradeDmg.cost + ")");
+  upgradeDmg.position(width / 2 - 350, 375);
   upgradeDmg.style("border-width", "5px");
-  upgradeDmg.size(100, 50);
+  upgradeDmg.size(200, 100);
   upgradeDmg.hide();
   upgradeDmg.style("background-color", color(255, 248, 220));
+  upgradeDmg.style("font-size", "20px");
 
   upgradeDmgM = createButton();
   upgradeDmgM.mousePressed(dmgMultiplier);
@@ -129,11 +126,25 @@ function buttons() {
   upgradeDmgM.html(
     "Higher damage multiplier (" + "\u20BD" + upgradeDmgM.cost + ")"
   );
-  upgradeDmgM.position(300, 375);
+  upgradeDmgM.position(width / 2 - 100, 375);
   upgradeDmgM.style("border-width", "5px");
   upgradeDmgM.size(200, 100);
   upgradeDmgM.hide();
   upgradeDmgM.style("background-color", color(255, 248, 220));
+  upgradeDmgM.style("font-size", "20px");
+
+  upgradeIncome = createButton();
+  upgradeIncome.mousePressed(incomeMultiplier);
+  upgradeIncome.cost = 2;
+  upgradeIncome.html(
+    "Higher income multiplier (" + "\u20BD" + upgradeIncome.cost + ")"
+  );
+  upgradeIncome.position(width / 2 + 150, 375);
+  upgradeIncome.style("border-width", "5px");
+  upgradeIncome.size(200, 100);
+  upgradeIncome.hide();
+  upgradeIncome.style("background-color", color(255, 248, 220));
+  upgradeIncome.style("font-size", "20px");
 
   resetProgress = createButton();
   resetProgress.mousePressed(prestige);
@@ -150,6 +161,7 @@ function buttons() {
 function hideButtons() {
   upgradeDmg.hide();
   upgradeDmgM.hide();
+  upgradeIncome.hide();
   for (let i = 0; i < morePlanetButtons.length; i++) {
     morePlanetButtons[i].hide();
     speedUpgrades[i].hide();
@@ -175,6 +187,7 @@ function showButtons(menuNumber) {
       if (i < 1) {
         upgradeDmg.show();
         upgradeDmgM.show();
+        upgradeIncome.show();
         resetProgress.show();
       } else {
         break;

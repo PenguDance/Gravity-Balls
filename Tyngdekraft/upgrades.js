@@ -5,6 +5,8 @@ function morePlanetsMoneyCheck(i) {
       nP[i]++;
     }
     morePlanets(i);
+  } else {
+    NEMT = frameCount;
   }
 }
 function morePlanets(i) {
@@ -31,6 +33,8 @@ function moreSpeedMoneyCheck(i) {
       nSU[i]++;
     }
     moreSpeed(i);
+  } else {
+    NEMT = frameCount;
   }
 }
 function moreSpeed(i) {
@@ -51,6 +55,8 @@ function moreValueMoneyCheck(i) {
       nVU[i]++;
     }
     moreValue(i);
+  } else {
+    NEMT = frameCount;
   }
 }
 
@@ -67,27 +73,41 @@ function moreValue(i) {
 }
 
 function moreDMG() {
-  if (money >= upgradeDmg.cost) {
-    money -= upgradeDmg.cost;
-    upgradeDmg.cost = round(upgradeDmg.cost ** (1 + 10 / upgradeDmg.cost));
+  if (pPoints >= upgradeDmg.cost) {
+    pPoints -= upgradeDmg.cost;
+    upgradeDmg.cost = round(upgradeDmg.cost ** (1 + 2 / upgradeDmg.cost));
     upgradeDmg.html("More Damage" + " ($" + upgradeDmg.cost + ")");
     Dmg++;
+  } else {
+    NEMT = frameCount;
   }
 }
 
 function dmgMultiplier() {
   if (pPoints >= upgradeDmgM.cost) {
     pPoints -= upgradeDmgM.cost;
-    upgradeDmgM.cost = round(upgradeDmgM.cost ** 2);
+    upgradeDmgM.cost = round(upgradeDmgM.cost ** (1 + 2 / upgradeDmgM.cost));
     dmgM = dmgM ** 1.5;
+    upgradeDmgM.html(
+      "Higher damage multiplier (" + "\u20BD" + upgradeDmgM.cost + ")"
+    );
+  } else {
+    NEMT = frameCount;
   }
 }
 
 function incomeMultiplier() {
   if (pPoints >= upgradeIncome.cost) {
     pPoints -= upgradeIncome.cost;
-    upgradeIncome.cost = round(upgradeIncome.cost ** 2);
+    upgradeIncome.cost = round(
+      upgradeIncome.cost ** (1 + 2 / upgradeIncome.cost)
+    );
     income = income ** 1.2;
+    upgradeIncome.html(
+      "Higher income multiplier (" + "\u20BD" + upgradeIncome.cost + ")"
+    );
+  } else {
+    NEMT = frameCount;
   }
 }
 
