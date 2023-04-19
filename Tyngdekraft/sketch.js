@@ -61,7 +61,6 @@ function preload() {
 function setup() {
   frameRate(60);
   createCanvas((windowWidth * 8) / 10, (windowHeight * 8) / 10);
-
   mouseX = width / 2;
   mouseY = height / 2;
   noStroke();
@@ -81,13 +80,13 @@ function setup() {
   ExIMG.size(ExRad * 2, ExRad * 2);
   ExIMG.hide();
   if (getItem("Earths") != null) {
-    //getCookie();
+    getCookie();
   }
 }
 
 function draw() {
   if (frameCount % 10 == 0) {
-    setCookie();
+    //setCookie();
   }
   background(224, 218, 193);
   if (playing) {
@@ -150,7 +149,7 @@ function draw() {
         for (let I = 0; I < n; I++) {
           let distance = sqrt(
             (splitballs[i].x - balls[I].x) ** 2 +
-              (splitballs[i].y - balls[I].y) ** 2
+            (splitballs[i].y - balls[I].y) ** 2
           );
           if (distance <= (splitballs[i].dia + balls[I].dia) / 2) {
             splitballs[i].img.hide();
@@ -172,8 +171,8 @@ function draw() {
         ((((boss[bSpawns].lives - boss[bSpawns].dmg) / boss[bSpawns].lives) *
           1) /
           3) *
-          2 *
-          width,
+        2 *
+        width,
         40
       );
     }
@@ -185,13 +184,13 @@ function draw() {
   textSize(20);
   text(
     "points = " +
-      score +
-      "        " +
-      "money = $" +
-      money +
-      "        " +
-      "prestige = " +
-      pPoints,
+    score +
+    "        " +
+    "money = $" +
+    money +
+    "        " +
+    "prestige = " +
+    pPoints,
     0,
     0,
     width,

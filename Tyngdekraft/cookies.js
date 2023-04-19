@@ -44,6 +44,7 @@ function getCookie() {
   cookieRestorePlanets();
   cookieRestoreSpeedUpgrade();
   cookieRestoreValueUpgrade();
+  print(getItem("Stats"))
 }
 
 function cookieRestorePlanets() {
